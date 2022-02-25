@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -9,11 +9,12 @@
 .theme-dark {
   --color-background-100: #25262c;
   --color-background-200: #1b1c22;
-  --color-background-300: #191a1f;
+  --color-background-300: #23242a;
+  --color-background-400: #191a1f;
   --color-border-100: #3a3b40;
-  --color-neutral: #ffffff;
-  --color-text-100: #bebebe;
-  --color-text-200: #5e5f62;
+  --color-text-100: #cccccc;
+  --color-text-200: #bebebe;
+  --color-text-300: #5e5f62;
 }
 
 body {
@@ -24,27 +25,30 @@ body {
   transition: 0.5s;
 }
 
-main {
-  max-width: 90%;
-  margin: auto;
-  margin-top: 4rem;
-}
-
 a {
   text-decoration: none;
 }
 
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .sidebar-container {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: -webkit-sticky;
+  position: sticky;
   max-width: 16rem;
   min-height: 100vh;
-  background: var(--color-background-300);
+  background: var(--color-background-400);
   border-right: 1px solid var(--color-border-100);
   z-index: 10;
   -webkit-transition: 0.3s;
   transition: 0.3s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .sidebar {
@@ -56,9 +60,6 @@ a {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
   overflow: hidden;
 }
 
@@ -73,14 +74,14 @@ a {
 
 .sidebar__list {
   padding: 0.75rem 0;
-  border-bottom: 1px solid var(--color-text-200);
+  border-bottom: 1px solid var(--color-text-300);
 }
 
 .sidebar .sidebar__toggle {
   position: absolute;
   top: 2rem;
   left: 2rem;
-  color: var(--color-text-100);
+  color: var(--color-text-200);
   font-size: 2rem;
   cursor: pointer;
   -webkit-transition: 0.5s;
@@ -98,13 +99,13 @@ a {
   font-size: 1.1rem;
   margin-left: 1.5rem;
   border-radius: 10px 0 0 10px;
-  color: var(--color-text-200);
+  color: var(--color-text-300);
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
 .sidebar__link:hover {
-  color: var(--color-text-100);
+  color: var(--color-text-200);
 }
 
 .sidebar__link__icon {
@@ -117,12 +118,12 @@ a {
   white-space: nowrap;
 }
 
-.close {
-  max-width: 5.5rem;
+.mini {
+  max-width: 5rem;
 }
 
 .active {
-  color: var(--color-text-100);
+  color: var(--color-text-200);
   background: var(--color-background-100);
 }
 /*# sourceMappingURL=main.css.map */
