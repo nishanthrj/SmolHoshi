@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;500;600;700;800&display=swap');
 
 * {
 	margin: 0;
@@ -7,25 +7,37 @@
 }
 
 .theme-dark {
-	--color-background-100: #25262c;
-	--color-background-200: #1b1c22;
-	--color-background-300: #23242a;
+	--color-background-100: #3f414e;
+	--color-background-200: #282931;
+	--color-background-300: #1b1c22;
 	--color-background-400: #191a1f;
-	--color-border-100: #3a3b40;
-	--color-text-100: #cccccc;
-	--color-text-200: #bebebe;
-	--color-text-300: #5e5f62;
+	--color-background-500: #111215;
+	--color-extra-100: #797d93;
+	--color-extra-200:#6c7086;
+	--color-extra-300:#616578;
+	--color-extra-400: #55596a;
+	--color-extra-500: #4a4d5c;
+	--color-text-100: #dcdde3;
+	--color-text-200: #bfc2cc;
+	--color-text-300: #a3a6b5;
+	--color-text-400: #9599aa;
+	--color-text-500: #878b9e;
+
 }
 
 body {
-	background: var(--color-background-200);
-	font-family: "Source Sans Pro", sans-serif;
+	background: var(--color-background-300);
+	font-family: "Overpass", sans-serif;
 	font-weight: 600;
 	transition: 0.5s;
 }
 
 a {
 	text-decoration: none;
+}
+
+li{
+	list-style: none;
 }
 
 .container{
@@ -38,7 +50,7 @@ a {
 	max-width: 16rem;
 	min-height: 100vh;
 	background: var(--color-background-400);
-	border-right: 1px solid var(--color-border-100);
+	border-right: 1px solid var(--color-extra-500);
 	z-index: 10;
 	transition: 0.3s;
 	user-select: none;
@@ -51,27 +63,31 @@ a {
 	overflow: hidden;
 
 	.logo {
-		padding: 0 6.5rem;
-
+		padding: 0 10rem 0 6rem;
+		
 		img {
 			margin-top: 1.2rem;
-			max-width: 6rem;
+			width: 6rem;
 		}
 	}
 
 	&__list {
 		padding: 0.75rem 0;
-		border-bottom: 1px solid var(--color-text-300);
+		border-bottom: 1px solid var(--color-extra-500);
 	}
 
-	.sidebar__toggle {
+	&__toggle {
 		position: absolute;
 		top: 2rem;
 		left: 2rem;
-		color: var(--color-text-200);
+		color: var(--color-text-500);
 		font-size: 2rem;
 		cursor: pointer;
-		transition: 0.5s;
+		transition: 0.3s;
+
+		&:hover{
+			color: var(--color-text-100);
+		}
 	}
 
 	&__link {
@@ -81,11 +97,11 @@ a {
 		font-size: 1.1rem;
 		margin-left: 1.5rem;
 		border-radius: 10px 0 0 10px;
-		color: var(--color-text-300);
+		color: var(--color-text-500);
 		transition: 0.3s;
 
 		&:hover {
-			color: var(--color-text-200);
+			color: var(--color-text-100);
 		}
 
 		&__icon {
@@ -105,6 +121,6 @@ a {
 }
 
 .active {
-	color: var(--color-text-200);
-	background: var(--color-background-100);
+	color: var(--color-text-100);
+	background: var(--color-background-200);
 }
