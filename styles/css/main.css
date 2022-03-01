@@ -30,6 +30,7 @@ body {
   font-weight: 600;
   -webkit-transition: 0.5s;
   transition: 0.5s;
+  overflow-x: hidden;
 }
 
 a {
