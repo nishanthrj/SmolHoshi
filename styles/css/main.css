@@ -42,15 +42,16 @@ li {
 }
 
 .container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: min-content auto;
+      grid-template-columns: -webkit-min-content auto;
+      grid-template-columns: min-content auto;
 }
 
 .sidebar-container {
-  position: -webkit-sticky;
-  position: sticky;
-  max-width: 16rem;
+  position: fixed;
+  width: 16rem;
   min-height: 100vh;
   background: var(--color-background-400);
   border-right: 1px solid var(--color-extra-500);
@@ -61,6 +62,12 @@ li {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.sidebar-space {
+  width: 16rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 
 .sidebar {
@@ -135,7 +142,7 @@ li {
 }
 
 .mini {
-  max-width: 5rem;
+  width: 5rem;
 }
 
 .active {

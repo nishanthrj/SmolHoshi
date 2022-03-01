@@ -42,19 +42,25 @@ li{
 }
 
 .container{
-	display: flex;
+	display: grid;
+	grid-template-columns: min-content auto;
 }
 
 // ====== SIDEBAR========================
 .sidebar-container {
-	position: sticky;
-	max-width: 16rem;
+	position: fixed;
+	width: 16rem;
 	min-height: 100vh;
 	background: var(--color-background-400);
 	border-right: 1px solid var(--color-extra-500);
 	z-index: 10;
 	transition: 0.3s;
 	user-select: none;
+}
+
+.sidebar-space{
+	width: 16rem;
+	transition: 0.3s;
 }
 
 .sidebar {
@@ -118,7 +124,7 @@ li{
 }
 
 .mini {
-	max-width: 5rem;
+	width: 5rem;
 }
 
 .active {
