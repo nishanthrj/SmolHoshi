@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel='stylesheet'
+			href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
+		<link rel="stylesheet" href="../styles/css/main.css">
+		<link rel="stylesheet" href="../styles/css/search.css">
+		<script defer src="../scripts/main.js"></script>
+		<script defer src="../scripts/search.js"></script>
+		<title>Search | Hoshi</title>
+	</head>
+	<body class="theme-dark">
+		<div class="container">
+			<div class="sidebar-container mini">
+				<aside class="sidebar">
+					<div class="sidebar__toggle">
+						<i class="fi fi-rs-menu-burger"></i>
+					</div>
+					<div class="logo-container">
+						<a href="#" class="logo">
+							<img src="../assets/logo-light.png" alt="Hoshi Logo">
+						</a>
+					</div>
+					<ul class="sidebar__list">
+						<a href="./index.html" class="sidebar__link">
+							<i class="fi fi-rs-home sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Home</span>
+						</a>
+						<a href="./search.html" class="sidebar__link active">
+							<i class="fi fi-rs-search sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Search</span>
+						</a>
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-user sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Profile</span>
+						</a>
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-play sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Anime List</span>
+						</a>
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-book-alt sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Manga List</span>
+						</a>
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-clock sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Schedule</span>
+						</a>
+					</ul>
+					<ul class="sidebar__list">
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-bell sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Notification</span>
+						</a>
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-settings sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Settings</span>
+						</a>
+						<a href="#" class="sidebar__link">
+							<i class="fi fi-rs-sign-out-alt sidebar__link__icon"></i>
+							<span class="sidebar__link__text">Logout</span>
+						</a>
+					</ul>
+				</aside>
+			</div>
+			<main class="content">
+				<div class="header">
+					Search
+					<span class="type">Anime<i class="fi fi-rs-angle-small-down type__icon"></i></span>
+					<div class="dropdown type__dropdown">
+						<a href="" class="type__dropdown__option">Anime</a>
+						<a href="" class="type__dropdown__option">Manga</a>
+					</div>
+				</div>
+				<div class="search">
+					<div class="search-field-container">
+						<div class="filter search-field">
+							<h3 class="filter__title">Search</h3>
+							<div class="field-wrap">
+								<i class="fi fi-rs-search"></i>
+								<input type="text" class="search__title" name="query" id="query" autocomplete="off"
+									placeholder="Search">
+							</div>
+						</div>
+					</div>
+					<div class="filter-field-container">
+						<div class="filter genre-field">
+							<h3 class="filter__title">Genre</h3>
+							<div class="field-wrap" id="genre-value">
+								<p class="placeholder">Any</p>
+								<div class="tag-wrap">
+									<span class="tag first-tag"></span>
+									<span class="tag other-tag"></span>
+								</div>
+								<i class="fi fi-rs-angle-small-down drop-icon"></i>
+							</div>
+							<div class="dropdown filter__dropdown genres__list">
+								<ul class="filter__dropdown__list">
+									<li class="filter__dropdown__heading">GENRE</li>
+									<li class="filter__dropdown__option">Action</li>
+									<li class="filter__dropdown__option">Adventure</li>
+									<li class="filter__dropdown__option">Comedy</li>
+									<li class="filter__dropdown__option">Drama</li>
+									<li class="filter__dropdown__option">Ecchi</li>
+									<li class="filter__dropdown__option">Fantasy</li>
+									<li class="filter__dropdown__option">Horror</li>
+									<li class="filter__dropdown__option">Romance</li>
+									<li class="filter__dropdown__option">Psychological</li>
+									<li class="filter__dropdown__option">Sci-Fi</li>
+									<li class="filter__dropdown__option">Slice of Life</li>
+									<li class="filter__dropdown__option">Mystery</li>
+									<li class="filter__dropdown__option">Suspense</li><br>
+									<li class="filter__dropdown__heading">TAGS</li>
+									<li class="filter__dropdown__option">Boys Love</li>
+									<li class="filter__dropdown__option">Harem</li>
+									<li class="filter__dropdown__option">Game</li>
+									<li class="filter__dropdown__option">Girls Love</li>
+									<li class="filter__dropdown__option">Josei</li>
+									<li class="filter__dropdown__option">Kids</li>
+									<li class="filter__dropdown__option">Mecha</li>
+									<li class="filter__dropdown__option">Military</li>
+									<li class="filter__dropdown__option">Music</li>
+									<li class="filter__dropdown__option">School</li>
+									<li class="filter__dropdown__option">Seinen</li>
+									<li class="filter__dropdown__option">Shoujo</li>
+									<li class="filter__dropdown__option">Shounen</li>
+									<li class="filter__dropdown__option">Sports</li>
+									<li class="filter__dropdown__option">Supernatural</li>
+								</ul>
+							</div>
+						</div>
+						<div class="filter type-field">
+							<h3 class="filter__title">Type</h3>
+							<div class="field-wrap" id="type-value">
+								<p class="placeholder">Any</p>
+								<i class="fi fi-rs-angle-small-down drop-icon"></i>
+							</div>
+							<div class="dropdown filter__dropdown type__list">
+								<ul class="filter__dropdown__list">
+									<li class="filter__dropdown__option">TV Show</li>
+									<li class="filter__dropdown__option">Movie</li>
+									<li class="filter__dropdown__option">Special</li>
+									<li class="filter__dropdown__option">OVA</li>
+									<li class="filter__dropdown__option">ONA</li>
+								</ul>
+							</div>
+						</div>
+						<div class="filter status-field">
+							<h3 class="filter__title">Status</h3>
+							<div class="field-wrap" id="status-value">
+								<p class="placeholder">Any</p>
+								<i class="fi fi-rs-angle-small-down drop-icon"></i>
+							</div>
+							<div class="dropdown filter__dropdown status__list">
+								<ul class="filter__dropdown__list">
+									<li class="filter__dropdown__option">Airing</li>
+									<li class="filter__dropdown__option">Finished</li>
+									<li class="filter__dropdown__option">Upcoming</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="filters-display">
+					<div class="active__filters">
+						<i class="fi fi-rs-label"></i>
+						<div class="active__filter-wrap">
+						</div>
+					</div>
+					<div class="sort">
+						<div class="active__sort__method"><i class="fi fi-rs-sort"></i>Title</div>
+						<div class="dropdown sort__dropdown sort__list">
+							<ul class="sort__dropdown__list">
+								<li class="sort__dropdown__option">Title</li>
+								<li class="sort__dropdown__option">Popularity</li>
+								<li class="sort__dropdown__option">Score</li>
+								<li class="sort__dropdown__option">Release Date</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+@mixin styleDropdown($class, $width, $padding, $fontSize) {
+	.#{$class} {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		gap: 0.5rem;
+		height: 0;
+		width: $width;
+		overflow: hidden;
+		font-size: $fontSize;
+		font-weight: 600;
+		background: var(--color-background-200);
+		border-radius: 0.5rem;
+		margin: 0.5rem 0;
+		transition: 0.25s;
+		cursor: pointer;
+		z-index: 100;
+
+		&__option {
+			color: var(--color-text-400);
+			margin: 0 1rem 0 1rem;
+			padding: $padding;
+			transition: 0.15s;
+
+			&:hover {
+				color: var(--color-text-100);
+				border-radius: .25rem;
+				background: var(--color-background-300);
+			}
+		}
+	}
+
+	.open-dropdown {
+		display: flex;
+		height: 6rem;
+		padding: 1rem 0;
+		box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.25);
+
+		&::-webkit-scrollbar {
+			width: 0.3rem;
+		}
+	}
+}
