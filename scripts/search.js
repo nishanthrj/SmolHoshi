@@ -175,7 +175,7 @@ const _getUserQuery = function () {
 		type: type ? type.textContent : "",
 		status: status ? status.textContent : "",
 		order: activeSortTitle.dataset.sort,
-		sort: activeSortTitle.dataset.sort === "Title" ? "asc" : "desc",
+		sort: activeSortTitle.dataset.sort === "title" ? "asc" : "desc",
 	};
 };
 
