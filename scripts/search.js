@@ -21,7 +21,8 @@ const activeSortTitle = document.querySelector(".active__sort__method");
 const activeFilterContainer = document.querySelector(".active__filter-wrap");
 const query = document.querySelector("#query");
 
-
+let totalPages;
+let page = 1;
 
 dropdownBtn.addEventListener("click", () => {
 	const dropdown = document.querySelector(".type__dropdown");
@@ -127,7 +128,14 @@ query.addEventListener("input", () => {
 	if (query.value.length >= 3) _generateMediaCard();
 });
 
-
+const loadMedia = function (entries, observer) {
+	if (entries[0].isIntersecting) {
+		observer.unobserve(entries[0].target);
+		if (page <= totalPages) page += 1;
+		_generateMediaCard((load = true));
+	}
+};
+const observer = new IntersectionObserver(loadMedia, { threshold: [0.5] });
 
 const _flipIcon = function (icon) {
 	if (icon.className.includes("up")) icon.className = icon.className.replace("up", "down");
@@ -212,7 +220,7 @@ const _generateGenreElements = function (genres) {
 	return tags;
 };
 
-const _generateMediaCard = function () {
+const _generateMediaCard = function (load = false) {
 	setTimeout(() => {
 		let cards = "";
 		const container = document.querySelector(".results");
@@ -226,6 +234,7 @@ const _generateMediaCard = function () {
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
+				totalPages = data.pagination.last_visible_page;
 				data.data.forEach((media) => {
 					cards += `<div class="media__card">
 								<div class="media__card__cover">
@@ -253,7 +262,15 @@ const _generateMediaCard = function () {
 								</div>
 							</div>`
 				});
+				if (load) {
+					container.insertAdjacentHTML("beforeend", cards);
+				} else {
 					container.innerHTML = cards;
+					page = 1;
+				}
+
+				let loadedCards = container.children;
+				observer.observe(loadedCards.item(loadedCards.length - 4));
 			});
 	}, 1000);
 };
