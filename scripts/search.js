@@ -63,6 +63,7 @@ genreDropdown.addEventListener("click", (e) => {
 		e.target.classList.toggle("checked");
 		_showMultiTags(genreBox, selectedGenres);
 		_activeFilters();
+		_generateMediaCard();
 	}
 });
 
@@ -83,8 +84,9 @@ typeDropdown.addEventListener("click", (e) => {
 			selectedType = null;
 			typeBox.querySelector(".placeholder").innerText = "Any";
 		}
-		_activeFilters();
 		_closeDropdown();
+		_activeFilters();
+		_generateMediaCard();
 	}
 });
 
@@ -105,20 +107,24 @@ statusDropdown.addEventListener("click", (e) => {
 			selectedStatus = null;
 			statusBox.querySelector(".placeholder").innerText = "Any";
 		}
-		_activeFilters();
 		_closeDropdown();
+		_activeFilters();
+		_generateMediaCard();
 	}
 });
 
 sortDropdown.addEventListener("click", (e) => {
 	if (e.target.classList.contains("sort__dropdown__option")) {
+		activeSortTitle.dataset.sort = e.target.dataset.sort;
 		activeSortTitle.innerHTML = `<i class="fi fi-rs-sort"></i>${e.target.textContent}`;
 		_closeDropdown();
+		_generateMediaCard();
 	}
 });
 
 query.addEventListener("input", () => {
 	_activeFilters();
+	if (query.value.length >= 3) _generateMediaCard();
 });
 
 
@@ -158,21 +164,96 @@ const _showMultiTags = function (container, elements) {
 	}
 };
 
-const _activeFilters = function () {
+const _getUserQuery = function () {
 	const genres = genreDropdown.querySelectorAll(".checked");
 	const type = typeDropdown.querySelector(".checked");
 	const status = statusDropdown.querySelector(".checked");
-	let activeFilters = "";
 
-	if (query.value) activeFilters += `<div class="active__filter">Search: ${query.value}</div>\n`;
-	if (genres.length > 0) {
-		genres.forEach((g) => {
+	return {
+		q: query.value ? query.value : "",
+		genres: genres.length > 0 ? [...genres].map((g) => g.dataset.genreId) : [],
+		type: type ? type.textContent : "",
+		status: status ? status.textContent : "",
+		order: activeSortTitle.dataset.sort,
+		sort: activeSortTitle.dataset.sort === "Title" ? "asc" : "desc",
+	};
+};
+
+const _activeFilters = function () {
+	let activeFilters = "";
+	const filters = _getUserQuery();
+	const genresNames = genreDropdown.querySelectorAll(".checked");
+
+	if (filters.q) activeFilters += `<div class="active__filter">Search: ${filters.q}</div>\n`;
+	if (genresNames.length > 0) {
+		genresNames.forEach((g) => {
 			activeFilters += `<div class="active__filter">${g.textContent}</div>\n`;
 		});
 	}
-	if (type) activeFilters += `<div class="active__filter">${type.textContent}</div>\n`;
-	if (status) activeFilters += `<div class="active__filter">${status.textContent}</div>\n`;
+	if (filters.type) activeFilters += `<div class="active__filter">${filters.type}</div>\n`;
+	if (filters.status) activeFilters += `<div class="active__filter">${filters.status}</div>\n`;
 
 	if (activeFilters) activeFilterContainer.innerHTML = activeFilters;
 	else activeFilterContainer.innerHTML = "";
+};
+
+const _ratingIcon = function (rating) {
+	if (!rating) return "";
+	else if (rating <= 4) return `<i class="fi fi-rs-sad"></i>`;
+	else if (rating >= 7) return `<i class="fi fi-rs-smile"></i>`;
+	else return `<i class="fi fi-rs-meh"></i>`;
+};
+
+const _generateGenreElements = function (genres) {
+	let tags = "";
+	genres.slice(0, 5).forEach((g) => {
+		tags += `<span class="media__card__info__genre">${g.name}</span>\n`;
+	});
+	return tags;
+};
+
+const _generateMediaCard = function () {
+	setTimeout(() => {
+		let cards = "";
+		const container = document.querySelector(".results");
+		const query = _getUserQuery();
+		const url =
+			`https://api.jikan.moe/v4/anime?q=${query.q}&page=${page}&` +
+			`type=${query.type}&status=${query.status}&sfw=true` +
+			`&genres=${[...query.genres]}&order_by=${query.order}&sort=${query.sort}`;
+
+		console.log(url);
+		fetch(url)
+			.then((res) => res.json())
+			.then((data) => {
+				data.data.forEach((media) => {
+					cards += `<div class="media__card">
+								<div class="media__card__cover">
+									<img src="${media.images.jpg.large_image_url}" alt="">
+								</div>
+								<div class="media__card__info">
+									<div class="media__card__info__header-wrap">
+										<a href="#" class="media__card__info__title">${media.title}</a>
+										<p class="media__card__info__score">${_ratingIcon(media.score)}
+										${media.score ? media.score.toString().padEnd(4, 0): ''}</p>
+									</div>
+									<div class="media__card__info__extra-wrap">
+										<p class="media__card__info__extra">
+										${media.type}
+										${media.episodes ? " • " + media.episodes + " Episode" : ""}${media.episodes > 1 ? "s" : ""}
+										</p>
+									</div>
+									<div class="media__card__info__genres-wrap">${_generateGenreElements(media.genres)}
+									</div>
+									<div class="media__card__info__plot-wrap">
+										<p class="media__card__info__synopsis">
+										${media.synopsis ? media.synopsis.replace("[Written by MAL Rewrite]", ""): ''}
+										</p>
+									</div>
+								</div>
+							</div>`
+				});
+					container.innerHTML = cards;
+			});
+	}, 1000);
 };
