@@ -424,6 +424,129 @@
   height: 10.5rem;
 }
 
+.results {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (35rem)[auto-fill];
+      grid-template-columns: repeat(auto-fill, 35rem);
+  gap: 2rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.results .media__card {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 11.25rem auto;
+      grid-template-columns: 11.25rem auto;
+  height: 15rem;
+  overflow: hidden;
+  background: var(--color-background-200);
+  -webkit-box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.25);
+          box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.25);
+  color: var(--color-text-200);
+  line-height: 1.25rem;
+  border-radius: 5px;
+}
+
+.results .media__card__cover {
+  overflow: hidden;
+}
+
+.results .media__card__cover img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.results .media__card__info {
+  padding: 1rem;
+  height: 95%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.results .media__card__info__header-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding-right: .5rem;
+}
+
+.results .media__card__info__title {
+  text-decoration: none;
+  width: 80%;
+  overflow-wrap: break-word;
+  color: inherit;
+}
+
+.results .media__card__info__score {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  -webkit-column-gap: .5rem;
+          column-gap: .5rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.results .media__card__info__score i {
+  font-size: 1.25rem;
+  height: 17px;
+  padding-bottom: 1.4rem;
+}
+
+.results .media__card__info__extra {
+  font-size: .85rem;
+  color: var(--color-text-500);
+}
+
+.results .media__card__info__genres-wrap {
+  margin-top: .5rem;
+  height: 2rem;
+  width: 100%;
+}
+
+.results .media__card__info__genre {
+  background: var(--color-background-100);
+  padding: 6px;
+  border-radius: 4px;
+  font-size: .7rem;
+}
+
+.results .media__card__info__plot-wrap {
+  font-size: .75rem;
+  color: var(--color-text-400);
+  line-height: 1.1rem;
+}
+
+.results .media__card__info__synopsis {
+  overflow: hidden;
+  margin-top: .25rem;
+  height: 6.5rem;
+}
+
+.results .media__card__info__synopsis:hover {
+  overflow: auto;
+}
+
+.results .media__card__info__synopsis::-webkit-scrollbar {
+  width: 5px;
+}
+
 *::-webkit-scrollbar {
   width: 0.5rem;
 }
