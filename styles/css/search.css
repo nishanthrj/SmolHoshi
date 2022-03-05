@@ -22,7 +22,7 @@
           user-select: none;
 }
 
-.header .type {
+.header .media-type {
   padding: 0.1rem 0.8rem;
   border-radius: 0.5rem;
   display: -webkit-inline-box;
@@ -35,7 +35,7 @@
   cursor: pointer;
 }
 
-.header .type__icon {
+.header .media-type__icon {
   margin-top: 10px;
   padding-left: 10px;
 }

@@ -1,10 +1,11 @@
-const dropdownBtn = document.querySelector(".type");
+const mediaDropdownBtn = document.querySelector(".media-type");
+const mediaDropdown = document.querySelector(".type__dropdown__list");
 
 const filterFields = document.querySelector(".filter-field-container");
 
 const genreDropdown = document.querySelector(".genres__list");
 const genreBox = document.querySelector("#genre-value");
-const selectedGenres = new Set();
+let selectedGenres = new Set();
 
 const typeDropdown = document.querySelector(".type__list");
 const typeBox = document.querySelector("#type-value");
@@ -21,12 +22,14 @@ const activeSortTitle = document.querySelector(".active__sort__method");
 const activeFilterContainer = document.querySelector(".active__filter-wrap");
 const query = document.querySelector("#query");
 
+let mediaType = mediaDropdownBtn.textContent.toLowerCase();
 let totalPages;
 let page = 1;
 
-dropdownBtn.addEventListener("click", () => {
+mediaDropdownBtn.addEventListener("click", () => {
 	const dropdown = document.querySelector(".type__dropdown");
-	let dropdownIcon = dropdownBtn.firstElementChild;
+	let dropdownIcon = mediaDropdownBtn.firstElementChild;
+	_closeDropdown(dropdown);
 	_flipIcon(dropdownIcon);
 	dropdown.classList.toggle("open-dropdown");
 });
@@ -49,6 +52,16 @@ sortBtn.addEventListener("click", (e) => {
 	if (!dropdown.contains(e.target)) {
 		_closeDropdown(dropdown);
 		dropdown.classList.toggle("open-dropdown");
+	}
+});
+
+mediaDropdown.addEventListener("click", (e) => {
+	if (e.target.classList.contains("type__dropdown__option")) {
+		mediaDropdownBtn.innerHTML = `${e.target.textContent}<i class="fi fi-rs-angle-small-down media-type__icon"></i>`;
+		mediaType = e.target.textContent.toLowerCase();
+		reset();
+		_closeDropdown();
+		switchType();
 	}
 });
 
@@ -137,6 +150,68 @@ const loadMedia = function (entries, observer) {
 };
 const observer = new IntersectionObserver(loadMedia, { threshold: [0.5] });
 
+const reset = function () {
+	totalPages = 0;
+	page = 1;
+	selectedGenres = new Set();
+	selectedType = null;
+	selectedStatus = null;
+
+	document.querySelector(".results").innerHTML = "";
+	activeFilterContainer.innerHTML = "";
+	query.value = "";
+	activeSortTitle.textContent = "Popularity";
+	genreBox.innerHTML = `<p class="placeholder">Any</p>
+		<div class="tag-wrap">
+			<span class="tag first-tag"></span>
+			<span class="tag other-tag"></span>
+		</div>
+		<i class="fi fi-rs-angle-small-down drop-icon"></i>`;
+	typeBox.querySelector(".placeholder").innerHTML = "Any";
+	statusBox.querySelector(".placeholder").innerHTML = "Any";
+	const dropdowns = [...document.querySelectorAll(".filter__dropdown__list")];
+	dropdowns.forEach((d) => {
+		[...d.children].forEach((opt) => {
+			if (opt.classList.contains("checked")) {
+				opt.classList.remove("checked");
+				opt.querySelector(".fi").remove();
+			}
+		});
+	});
+};
+
+const switchType = function () {
+	if (mediaType === "manga") {
+		typeDropdown.innerHTML = `<ul class="filter__dropdown__list">
+			<li class="filter__dropdown__option">Manga</li>
+			<li class="filter__dropdown__option">Lightnovel</li>
+			<li class="filter__dropdown__option">Oneshot</li>
+			<li class="filter__dropdown__option">Manhwa</li>
+			<li class="filter__dropdown__option">Manhua</li>
+		</ul>`;
+
+		statusDropdown.innerHTML = `<ul class="filter__dropdown__list">
+				<li class="filter__dropdown__option">Publishing</li>
+				<li class="filter__dropdown__option">Complete</li>
+				<li class="filter__dropdown__option">Upcoming</li>
+			</ul>`;
+	} else {
+		typeDropdown.innerHTML = `<ul class="filter__dropdown__list">
+			<li class="filter__dropdown__option">TV</li>
+			<li class="filter__dropdown__option">Movie</li>
+			<li class="filter__dropdown__option">Special</li>
+			<li class="filter__dropdown__option">OVA</li>
+			<li class="filter__dropdown__option">ONA</li>
+		</ul>`;
+
+		statusDropdown.innerHTML = `<ul class="filter__dropdown__list">
+				<li class="filter__dropdown__option">Airing</li>
+				<li class="filter__dropdown__option">Complete</li>
+				<li class="filter__dropdown__option">Upcoming</li>
+			</ul>`;
+	}
+};
+
 const _flipIcon = function (icon) {
 	if (icon.className.includes("up")) icon.className = icon.className.replace("up", "down");
 	else icon.className = icon.className.replace("down", "up");
@@ -201,8 +276,11 @@ const _activeFilters = function () {
 	if (filters.type) activeFilters += `<div class="active__filter">${filters.type}</div>\n`;
 	if (filters.status) activeFilters += `<div class="active__filter">${filters.status}</div>\n`;
 
-	if (activeFilters) activeFilterContainer.innerHTML = activeFilters;
-	else activeFilterContainer.innerHTML = "";
+	if (activeFilters) {
+		activeFilterContainer.innerHTML = activeFilters;
+	} else {
+		activeFilterContainer.innerHTML = "";
+	}
 };
 
 const _ratingIcon = function (rating) {
@@ -220,17 +298,36 @@ const _generateGenreElements = function (genres) {
 	return tags;
 };
 
+const _formatScoreInfo = function (media) {
+	if (mediaType === "manga") {
+		return media.scored;
+	}
+	return media.score;
+};
+
+const _formatExtraInfo = function (media) {
+	if (mediaType === "manga") {
+		return (
+			`${media.chapters ? " • " + media.chapters + " Chapter" : ""}` +
+			`${media.chapters > 1 ? "s" : ""}`
+		);
+	}
+	return (
+		`${media.episodes ? " • " + media.episodes + " Episode" : ""}` +
+		`${media.episodes > 1 ? "s" : ""}`
+	);
+};
+
 const _generateMediaCard = function (load = false) {
 	setTimeout(() => {
 		let cards = "";
 		const container = document.querySelector(".results");
 		const query = _getUserQuery();
 		const url =
-			`https://api.jikan.moe/v4/anime?q=${query.q}&page=${page}&` +
-			`type=${query.type}&status=${query.status}&sfw=true` +
+			`https://api.jikan.moe/v4/${mediaType}?q=${query.q}&page=${page}&` +
+			`type=${query.type}&status=${query.status}&sfw=true&genres_exclude=49` +
 			`&genres=${[...query.genres]}&order_by=${query.order}&sort=${query.sort}`;
 
-		console.log(url);
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
@@ -243,24 +340,24 @@ const _generateMediaCard = function (load = false) {
 								<div class="media__card__info">
 									<div class="media__card__info__header-wrap">
 										<a href="#" class="media__card__info__title">${media.title}</a>
-										<p class="media__card__info__score">${_ratingIcon(media.score)}
-										${media.score ? media.score.toString().padEnd(4, 0): ''}</p>
+										<p class="media__card__info__score">${_ratingIcon(_formatScoreInfo(media))}
+										${_formatScoreInfo(media) ? _formatScoreInfo(media).toString().padEnd(4, 0) : ""}</p>
 									</div>
 									<div class="media__card__info__extra-wrap">
 										<p class="media__card__info__extra">
 										${media.type}
-										${media.episodes ? " • " + media.episodes + " Episode" : ""}${media.episodes > 1 ? "s" : ""}
+										${_formatExtraInfo(media)}
 										</p>
 									</div>
 									<div class="media__card__info__genres-wrap">${_generateGenreElements(media.genres)}
 									</div>
 									<div class="media__card__info__plot-wrap">
 										<p class="media__card__info__synopsis">
-										${media.synopsis ? media.synopsis.replace("[Written by MAL Rewrite]", ""): ''}
+										${media.synopsis ? media.synopsis.replace("[Written by MAL Rewrite]", "") : ""}
 										</p>
 									</div>
 								</div>
-							</div>`
+							</div>`;
 				});
 				if (load) {
 					container.insertAdjacentHTML("beforeend", cards);
