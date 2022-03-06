@@ -74,27 +74,26 @@
 					<span class="media-type">Anime<i class="fi fi-rs-angle-small-down media-type__icon"></i></span>
 					<div class="dropdown type__dropdown">
 						<ul class="type__dropdown__list">
-							<li href="" class="type__dropdown__option">Anime</li>
-							<li href="" class="type__dropdown__option">Manga</li>
+							<li class="type__dropdown__option">Anime</li>
+							<li class="type__dropdown__option">Manga</li>
 						</ul>
 					</div>
 				</div>
-				<div class="search">
-					<div class="search-field-container">
-						<div class="filter search-field">
-							<h3 class="filter__title">Search</h3>
+				<div class="search-panel">
+					<div class="search__field__container">
+						<div class="field search-field">
+							<h3 class="field__title">Search</h3>
 							<div class="field-wrap">
 								<i class="fi fi-rs-search"></i>
-								<input type="text" class="search__title" name="query" id="query" autocomplete="off"
-									placeholder="Search">
+								<input type="text" name="query" id="query" autocomplete="off" placeholder="Search">
 							</div>
 						</div>
 					</div>
-					<div class="filter-field-container">
-						<div class="filter genre-field">
-							<h3 class="filter__title">Genre</h3>
+					<div class="filter__field__container">
+						<div class="field genre-field">
+							<h3 class="field__title">Genre</h3>
 							<div class="field-wrap" id="genre-value">
-								<p class="placeholder">Any</p>
+								<p class="field__placeholder">Any</p>
 								<div class="tag-wrap">
 									<span class="tag first-tag"></span>
 									<span class="tag other-tag"></span>
@@ -136,10 +135,10 @@
 								</ul>
 							</div>
 						</div>
-						<div class="filter type-field">
-							<h3 class="filter__title">Type</h3>
+						<div class="field type-field">
+							<h3 class="field__title">Type</h3>
 							<div class="field-wrap" id="type-value">
-								<p class="placeholder">Any</p>
+								<p class="field__placeholder">Any</p>
 								<i class="fi fi-rs-angle-small-down drop-icon"></i>
 							</div>
 							<div class="dropdown filter__dropdown type__list">
@@ -152,10 +151,10 @@
 								</ul>
 							</div>
 						</div>
-						<div class="filter status-field">
-							<h3 class="filter__title">Status</h3>
+						<div class="field status-field">
+							<h3 class="field__title">Status</h3>
 							<div class="field-wrap" id="status-value">
-								<p class="placeholder">Any</p>
+								<p class="field__placeholder">Any</p>
 								<i class="fi fi-rs-angle-small-down drop-icon"></i>
 							</div>
 							<div class="dropdown filter__dropdown status__list">
@@ -169,13 +168,13 @@
 					</div>
 				</div>
 				<div class="filters-display">
-					<div class="active__filters">
+					<div class="active__filter">
 						<i class="fi fi-rs-label"></i>
 						<div class="active__filter-wrap">
 						</div>
 					</div>
 					<div class="sort">
-						<div class="active__sort__method" data-sort="members">
+						<div class="sort__method" data-sort="members">
 							<i class="fi fi-rs-sort"></i>Popularity
 						</div>
 						<div class="dropdown sort__dropdown sort__list">
