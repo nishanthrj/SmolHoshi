@@ -203,7 +203,7 @@ const generateMediaCard = function (load = false) {
 		const query = getUserQuery();
 		const url =
 			`https://api.jikan.moe/v4/${mediaType}?q=${query.q}&page=${page}&` +
-			`type=${query.type}&status=${query.status}&sfw=true&genres_exclude=49` +
+			`type=${query.type}&status=${query.status}&sfw=true&genres_exclude=12,49` +
 			`&genres=${[...query.genres]}&order_by=${query.order}&sort=${query.sort}`;
 
 		fetch(url)
