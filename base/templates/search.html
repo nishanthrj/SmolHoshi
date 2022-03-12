@@ -1,0 +1,217 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block styles %}
+	<link rel="stylesheet" href="{% static 'css/search.css' %}" />
+{% endblock %} 
+
+{% block scripts %}
+	<script defer src="{% static 'js/search.js' %}"></script>
+{% endblock %} 
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+	<main class="content">
+		<div class="header">
+			Search
+			<span class="media-type">Anime<i class="fi fi-rs-angle-small-down media-type__icon"></i></span>
+			<div class="dropdown type__dropdown">
+				<ul class="type__dropdown__list">
+					<li class="type__dropdown__option">Anime</li>
+					<li class="type__dropdown__option">Manga</li>
+				</ul>
+			</div>
+		</div>
+		<div class="search-panel">
+			<div class="search__field__container">
+				<div class="field search-field">
+					<h3 class="field__title">Search</h3>
+					<div class="field-wrap">
+						<i class="fi fi-rs-search"></i>
+						<input type="text" name="query" id="query" autocomplete="off" placeholder="Search">
+					</div>
+				</div>
+			</div>
+			<div class="filter__field__container">
+				<div class="field genre-field">
+					<h3 class="field__title">Genre</h3>
+					<div class="field-wrap" id="genre-value">
+						<p class="field__placeholder">Any</p>
+						<div class="tag-wrap">
+							<span class="tag first-tag"></span>
+							<span class="tag other-tag"></span>
+						</div>
+						<i class="fi fi-rs-angle-small-down drop-icon"></i>
+					</div>
+					<div class="dropdown filter__dropdown genres__list">
+						<ul class="filter__dropdown__list">
+							<li class="filter__dropdown__heading">GENRE</li>
+							<li class="filter__dropdown__option">Action</li>
+							<li class="filter__dropdown__option">Adventure</li>
+							<li class="filter__dropdown__option">Comedy</li>
+							<li class="filter__dropdown__option">Drama</li>
+							<li class="filter__dropdown__option">Ecchi</li>
+							<li class="filter__dropdown__option">Fantasy</li>
+							<li class="filter__dropdown__option">Horror</li>
+							<li class="filter__dropdown__option">Music</li>
+							<li class="filter__dropdown__option">Mystery</li>
+							<li class="filter__dropdown__option">Psychological</li>
+							<li class="filter__dropdown__option">Romance</li>
+							<li class="filter__dropdown__option">Science Fiction</li>
+							<li class="filter__dropdown__option">Slice of Life</li>
+							<li class="filter__dropdown__option">Sports</li>
+							<li class="filter__dropdown__option">Supernatural</li>
+							<li class="filter__dropdown__option">Thriller</li>
+							<li>&nbsp;</li>
+							<li class="filter__dropdown__heading">TAGS</li>
+							<li class="filter__dropdown__option">Alien</li>
+							<li class="filter__dropdown__option">Android</li>
+							<li class="filter__dropdown__option">Angel</li>
+							<li class="filter__dropdown__option">Assassin</li>
+							<li class="filter__dropdown__option">Baseball</li>
+							<li class="filter__dropdown__option">Basketball</li>
+							<li class="filter__dropdown__option">Battle Royale</li>
+							<li class="filter__dropdown__option">Bishounen</li>
+							<li class="filter__dropdown__option">Bounty Hunter</li>
+							<li class="filter__dropdown__option">Boxing</li>
+							<li class="filter__dropdown__option">Card Games</li>
+							<li class="filter__dropdown__option">Combat</li>
+							<li class="filter__dropdown__option">Conspiracy</li>
+							<li class="filter__dropdown__option">Cooking</li>
+							<li class="filter__dropdown__option">Cops</li>
+							<li class="filter__dropdown__option">Countryside</li>
+							<li class="filter__dropdown__option">Crime</li>
+							<li class="filter__dropdown__option">Cyberpunk</li>
+							<li class="filter__dropdown__option">Cyborg</li>
+							<li class="filter__dropdown__option">Cycling</li>
+							<li class="filter__dropdown__option">Dark Fantasy</li>
+							<li class="filter__dropdown__option">Deity</li>
+							<li class="filter__dropdown__option">Delinquent</li>
+							<li class="filter__dropdown__option">Demon</li>
+							<li class="filter__dropdown__option">Detective</li>
+							<li class="filter__dropdown__option">Disaster</li>
+							<li class="filter__dropdown__option">Dragon</li>
+							<li class="filter__dropdown__option">Dystopia</li>
+							<li class="filter__dropdown__option">Elementary School</li>
+							<li class="filter__dropdown__option">Elf</li>
+							<li class="filter__dropdown__option">Family</li>
+							<li class="filter__dropdown__option">Fantasy World</li>
+							<li class="filter__dropdown__option">Friendship</li>
+							<li class="filter__dropdown__option">Future</li>
+							<li class="filter__dropdown__option">Ghost</li>
+							<li class="filter__dropdown__option">Gunfights</li>
+							<li class="filter__dropdown__option">Harem</li>
+							<li class="filter__dropdown__option">High School</li>
+							<li class="filter__dropdown__option">Historical</li>
+							<li class="filter__dropdown__option">Idol</li>
+							<li class="filter__dropdown__option">Isekai</li>
+							<li class="filter__dropdown__option">Josei</li>
+							<li class="filter__dropdown__option">Kids</li>
+							<li class="filter__dropdown__option">Loli</li>
+							<li class="filter__dropdown__option">Mafia</li>
+							<li class="filter__dropdown__option">Magic</li>
+							<li class="filter__dropdown__option">Magical Girl</li>
+							<li class="filter__dropdown__option">Maid</li>
+							<li class="filter__dropdown__option">Martial Arts</li>
+							<li class="filter__dropdown__option">Mecha</li>
+							<li class="filter__dropdown__option">Middle School</li>
+							<li class="filter__dropdown__option">Military</li>
+							<li class="filter__dropdown__option">Motorsport</li>
+							<li class="filter__dropdown__option">Navy</li>
+							<li class="filter__dropdown__option">Ninja</li>
+							<li class="filter__dropdown__option">Nurse</li>
+							<li class="filter__dropdown__option">Office Lady</li>
+							<li class="filter__dropdown__option">Parody</li>
+							<li class="filter__dropdown__option">Politics</li>
+							<li class="filter__dropdown__option">Post Apocalypse</li>
+							<li class="filter__dropdown__option">Religion</li>
+							<li class="filter__dropdown__option">Revenge</li>
+							<li class="filter__dropdown__option">Reverse Harem</li>
+							<li class="filter__dropdown__option">Robot</li>
+							<li class="filter__dropdown__option">Samurai</li>
+							<li class="filter__dropdown__option">School Clubs</li>
+							<li class="filter__dropdown__option">School Life</li>
+							<li class="filter__dropdown__option">Seinen</li>
+							<li class="filter__dropdown__option">Shoujo</li>
+							<li class="filter__dropdown__option">Shoujo Ai</li>
+							<li class="filter__dropdown__option">Shounen</li>
+							<li class="filter__dropdown__option">Shounen Ai</li>
+							<li class="filter__dropdown__option">Soccer</li>
+							<li class="filter__dropdown__option">Space</li>
+							<li class="filter__dropdown__option">Street Racing</li>
+							<li class="filter__dropdown__option">Super Power</li>
+							<li class="filter__dropdown__option">Superhero</li>
+							<li class="filter__dropdown__option">Swordplay</li>
+							<li class="filter__dropdown__option">Tennis</li>
+							<li class="filter__dropdown__option">Time Travel</li>
+							<li class="filter__dropdown__option">University</li>
+							<li class="filter__dropdown__option">Vampire</li>
+							<li class="filter__dropdown__option">Violence</li>
+							<li class="filter__dropdown__option">Virtual Reality</li>
+							<li class="filter__dropdown__option">Volleyball</li>
+							<li class="filter__dropdown__option">War</li>
+							<li class="filter__dropdown__option">Working Life</li>
+							<li class="filter__dropdown__option">Wrestling</li>
+							<li class="filter__dropdown__option">Yaoi</li>
+							<li class="filter__dropdown__option">Zombie</li>
+						</ul>
+					</div>
+				</div>
+				<div class="field type-field">
+					<h3 class="field__title">Type</h3>
+					<div class="field-wrap" id="type-value">
+						<p class="field__placeholder">Any</p>
+						<i class="fi fi-rs-angle-small-down drop-icon"></i>
+					</div>
+					<div class="dropdown filter__dropdown type__list">
+						<ul class="filter__dropdown__list">
+							<li class="filter__dropdown__option">TV</li>
+							<li class="filter__dropdown__option">Movie</li>
+							<li class="filter__dropdown__option">Special</li>
+							<li class="filter__dropdown__option">OVA</li>
+							<li class="filter__dropdown__option">ONA</li>
+						</ul>
+					</div>
+				</div>
+				<div class="field status-field">
+					<h3 class="field__title">Status</h3>
+					<div class="field-wrap" id="status-value">
+						<p class="field__placeholder">Any</p>
+						<i class="fi fi-rs-angle-small-down drop-icon"></i>
+					</div>
+					<div class="dropdown filter__dropdown status__list">
+						<ul class="filter__dropdown__list">
+							<li class="filter__dropdown__option">Current</li>
+							<li class="filter__dropdown__option">Finished</li>
+							<li class="filter__dropdown__option">Upcoming</li>
+							<li class="filter__dropdown__option">Unreleased</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="filters-display">
+			<div class="active__filter">
+				<i class="fi fi-rs-label"></i>
+				<div class="active__filter-wrap">
+				</div>
+			</div>
+			<div class="sort">
+				<div class="sort__method" data-sort="-averageRating">
+					<i class="fi fi-rs-sort"></i>Score
+				</div>
+				<div class="dropdown sort__dropdown sort__list">
+					<ul class="sort__dropdown__list">
+						<li class="sort__dropdown__option" data-sort="slug">Title</li>
+						<li class="sort__dropdown__option" data-sort="-userCount">Popularity</li>
+						<li class="sort__dropdown__option" data-sort="-averageRating">Score</li>
+						<li class="sort__dropdown__option" data-sort="-startDate">Release Date</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="results"></div>
+	</main>
+{% endblock %}

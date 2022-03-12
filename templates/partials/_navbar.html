@@ -1,0 +1,55 @@
+{% load static %}
+<div class="sidebar-space mini">
+	<div class="sidebar-container mini">
+		<aside class="sidebar">
+			<div class="sidebar__toggle">
+				<i class="fi fi-rs-menu-burger"></i>
+			</div>
+			<div class="logo-container">
+				<a href="#" class="logo">
+					<img src="{% static 'assets/logo-light.png' %}" alt="Hoshi Logo">
+				</a>
+			</div>
+			<ul class="sidebar__list">
+				<a href="{% url 'home' %}" class="sidebar__link">
+					<i class="fi fi-rs-home sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Home</span>
+				</a>
+				<a href="{% url 'search' %}" class="sidebar__link">
+					<i class="fi fi-rs-search sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Search</span>
+				</a>
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-user sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Profile</span>
+				</a>
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-play sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Anime List</span>
+				</a>
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-book-alt sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Manga List</span>
+				</a>
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-clock sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Schedule</span>
+				</a>
+			</ul>
+			<ul class="sidebar__list">
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-bell sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Notification</span>
+				</a>
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-settings sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Settings</span>
+				</a>
+				<a href="#" class="sidebar__link">
+					<i class="fi fi-rs-sign-out-alt sidebar__link__icon"></i>
+					<span class="sidebar__link__text">Logout</span>
+				</a>
+			</ul>
+		</aside>
+	</div>
+</div>
