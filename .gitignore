@@ -1,2 +1,17 @@
-temp/
+# Visual Stidio Code
+.vscode/
+
+# SCSS
 *.css.map
+
+# Virtual Environment
+venv/
+
+# Python
+__pycache__/
+
+# Django
+db.sqlite3
+
+# Other
+temp/
