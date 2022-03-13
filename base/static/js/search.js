@@ -295,7 +295,7 @@ const generateMediaCard = function (load = false) {
 					media = x.attributes;
 					cards += `<div class="media__card">
 								<div class="media__card__cover">
-									<img src="${media.posterImage.original}" alt="">
+									<img src="${media.posterImage.medium}" alt="">
 								</div>
 								<div class="media__card__info">
 									<div class="media__card__info__header-wrap">
