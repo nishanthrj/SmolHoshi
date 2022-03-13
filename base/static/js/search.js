@@ -24,12 +24,17 @@ const query = document.querySelector("#query");
 
 let nextPage;
 let mediaType = mediaDropdownBtn.textContent.toLowerCase();
+
+// Grab only the Genres and not the Tags
 const allGenres = new Set(
 	[...genreDropdown.querySelectorAll(".filter__dropdown__option")]
 		.slice(0, 16)
 		.map((g) => g.textContent)
 );
 
+/**
+ * Resets everything back to Default.
+ */
 const reset = function () {
 	nextPage = "";
 	selectedGenres = new Set();
@@ -50,13 +55,15 @@ const reset = function () {
 	typeBox.querySelector(".field__placeholder").innerHTML = "Any";
 	statusBox.querySelector(".field__placeholder").innerHTML = "Any";
 	const selectedOpt = [...document.querySelectorAll(".filter__dropdown__option--selected")];
-	console.log(selectedOpt);
 	selectedOpt.forEach((opt) => {
 		opt.classList.remove("filter__dropdown__option--selected");
 		opt.querySelector("svg").remove();
 	});
 };
 
+/**
+ * Replaces Filter options when media type is switched.
+ */
 const switchType = function () {
 	if (mediaType === "manga") {
 		typeDropdown.innerHTML = `<ul class="filter__dropdown__list">
@@ -91,11 +98,20 @@ const switchType = function () {
 	}
 };
 
+/**
+ * Flip the Dropdown Icon.
+ * @param {element} dropdown The dropdown that was clicked.
+ * @param {element} icon The icon that needs to be flipped.
+ */
 const flipIcon = function (dropdown, icon) {
 	if (dropdown.className.includes("open")) icon.style.transform = "rotate(180deg)";
 	else icon.style.transform = "rotate(0deg)";
 };
 
+/**
+ * Closes all the dropdown.
+ * @param {element} ignore The Dropdown that should remain open.
+ */
 const closeDropdown = function (ignore) {
 	const dropdowns = document.querySelectorAll(".dropdown");
 	dropdowns.forEach((d) => {
@@ -104,28 +120,37 @@ const closeDropdown = function (ignore) {
 	});
 };
 
-const showMultiTags = function (container, elements) {
+/**
+ * Displays the selected genres in the genre field.
+ * @param {NodeList} elements Selected genres.
+ */
+const showMultiTags = function (elements) {
 	if (elements.size !== 0) {
 		let selected = [...elements];
-		container.querySelector(".field__placeholder").classList.add("field__placeholder--hide");
-		container.querySelector(".tag-wrap").classList.add("tag-wrap--show");
-		container.querySelector(".first-tag").classList.add("tag--show");
-		container.querySelector(".first-tag").innerHTML = selected[0];
+		genreBox.querySelector(".field__placeholder").classList.add("field__placeholder--hide");
+		genreBox.querySelector(".tag-wrap").classList.add("tag-wrap--show");
+		genreBox.querySelector(".first-tag").classList.add("tag--show");
+		genreBox.querySelector(".first-tag").innerHTML = selected[0];
 		if (elements.size > 1) {
-			container.querySelector(".other-tag").classList.add("tag--show");
-			container.querySelector(".other-tag").innerHTML = `+${elements.size - 1}`;
+			// Simplify extra genres into count when more than one genre is selected.
+			genreBox.querySelector(".other-tag").classList.add("tag--show");
+			genreBox.querySelector(".other-tag").innerHTML = `+${elements.size - 1}`;
 		} else {
-			container.querySelector(".other-tag").classList.remove("tag--show");
-			container.querySelector(".other-tag").innerHTML = "";
+			genreBox.querySelector(".other-tag").classList.remove("tag--show");
+			genreBox.querySelector(".other-tag").innerHTML = "";
 		}
 	} else {
-		container.querySelector(".field__placeholder").classList.remove("field__placeholder--hide");
-		container.querySelector(".tag-wrap").classList.remove("tag-wrap--show");
-		container.querySelector(".first-tag").classList.remove("tag--show");
-		container.querySelector(".first-tag").innerHTML = "";
+		genreBox.querySelector(".field__placeholder").classList.remove("field__placeholder--hide");
+		genreBox.querySelector(".tag-wrap").classList.remove("tag-wrap--show");
+		genreBox.querySelector(".first-tag").classList.remove("tag--show");
+		genreBox.querySelector(".first-tag").innerHTML = "";
 	}
 };
 
+/**
+ * Returns the filter values the user selected.
+ * @returns {object} Filter Values.
+ */
 const getUserQuery = function () {
 	const genres = genreDropdown.querySelectorAll(".filter__dropdown__option--selected");
 	const type = typeDropdown.querySelector(".filter__dropdown__option--selected");
@@ -133,6 +158,7 @@ const getUserQuery = function () {
 
 	return {
 		q: query.value ? query.value : "",
+		// Extracting the name of the genre
 		genres: genres.length > 0 ? [...genres].map((g) => g.textContent) : [],
 		type: type ? type.textContent : "",
 		status: status ? status.textContent : "",
@@ -140,6 +166,9 @@ const getUserQuery = function () {
 	};
 };
 
+/**
+ * Displays all the filters that were selected by the user.
+ */
 const activeFilters = function () {
 	let activeFilters = "";
 	const filters = getUserQuery();
@@ -162,6 +191,11 @@ const activeFilters = function () {
 	}
 };
 
+/**
+ * Returns a mood icon based on rating.
+ * @param {Number} rating Average rating of then media
+ * @returns {string} A HTML string that of the respective icon
+ */
 const ratingIcon = function (rating) {
 	if (!rating) return "";
 	else if (rating <= 45) return `<i data-feather="frown"></i>`;
@@ -169,10 +203,17 @@ const ratingIcon = function (rating) {
 	else return `<i data-feather="meh"></i>`;
 };
 
+/**
+ * Generates a collection of Genre elements for a specific media.
+ * @param {object} listGenres All the genres related to the fetched media collection.
+ * @param {object} mediaGenres All the genres of the specific media.
+ * @returns {string} The collection of genre elements respective to specific media.
+ */
 const generateGenreElements = function (listGenres, mediaGenres) {
 	let tags = "";
 	let tagCount = 0;
 
+	// Checks if the id of the genre in the media matches with any genre in the collection to get the genre title.
 	for (let mg of mediaGenres) {
 		for (let lg of listGenres) {
 			if (mg && mg.id === lg.id) {
@@ -183,11 +224,17 @@ const generateGenreElements = function (listGenres, mediaGenres) {
 				}
 			}
 		}
+		// Ensure only four genre are displayed since elements might overflow on the card
 		if (tagCount >= 4) return tags;
 	}
 	return tags;
 };
 
+/**
+ * Formats the Extra Info (episodes, runtime, chapters) of the media.
+ * @param {object} media The media that needs to be formatted.
+ * @returns {string} Formatted Extra Info.
+ */
 const formatExtraInfo = function (media) {
 	if (media.subtype === "TV") {
 		return (
@@ -211,6 +258,10 @@ const formatExtraInfo = function (media) {
 	);
 };
 
+/**
+ * Construct the API Path based on user query.
+ * @returns {string} The API Path.
+ */
 const constructUrl = function () {
 	const query = getUserQuery();
 	let base = `https://kitsu.io/api/edge/${mediaType}?include=categories&page[limit]=20&`;
@@ -223,15 +274,20 @@ const constructUrl = function () {
 	return base;
 };
 
+/**
+ * Renders the media cards based on search results.
+ * @param {boolean} [load=false] Determines whether new cards should be rendered below or replace the existing cards.
+ */
 const generateMediaCard = function (load = false) {
+	let url;
+	let cards = "";
+	const container = document.querySelector(".results");
+	
+	if (load) url = nextPage;
+	else url = constructUrl();
+	
+	// Add a delay on fetching data to avoid exhausting API rate.
 	setTimeout(() => {
-		let url;
-		let cards = "";
-		const container = document.querySelector(".results");
-
-		if (load) url = nextPage;
-		else url = constructUrl();
-
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
@@ -282,8 +338,15 @@ const generateMediaCard = function (load = false) {
 	}, 1000);
 };
 
-const loadMedia = function (entries, observer) {
+/**
+ * Observer function that helps to load new media on scroll.
+ * @param {object} entries The elements being observed by th observer.
+ * @param {object} observer The Observer object.
+ */
+const loadMedia = function (entries, observer) { 
 	if (entries[0].isIntersecting) {
+		// Stop observing the element when it comes into view once.
+		// This prevents the page from loading new media every time the element comes into view.
 		observer.unobserve(entries[0].target);
 		if (nextPage) generateMediaCard((load = true));
 	}
@@ -341,7 +404,7 @@ genreDropdown.addEventListener("click", (e) => {
 			selectedGenres.delete(e.target.textContent);
 		}
 		e.target.classList.toggle("filter__dropdown__option--selected");
-		showMultiTags(genreBox, selectedGenres);
+		showMultiTags(selectedGenres);
 		activeFilters();
 		generateMediaCard();
 	}
