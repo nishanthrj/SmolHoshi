@@ -39,23 +39,21 @@ const reset = function () {
 	document.querySelector(".results").innerHTML = "";
 	activeFilterContainer.innerHTML = "";
 	query.value = "";
-	activeSortTitle.innerHTML = `<i class="fi fi-rs-sort"></i>Popularity`;
+	activeSortTitle.innerHTML = `<i data-feather="code" class="sort-icon"></i>Score`;
 	genreBox.innerHTML = `<p class="field__placeholder">Any</p>
 		<div class="tag-wrap">
 			<span class="tag first-tag"></span>
 			<span class="tag other-tag"></span>
 		</div>
-		<i class="fi fi-rs-angle-small-down drop-icon"></i>`;
+		<i data-feather="chevron-down" class="drop-icon"></i>`;
+	feather.replace();
 	typeBox.querySelector(".field__placeholder").innerHTML = "Any";
 	statusBox.querySelector(".field__placeholder").innerHTML = "Any";
-	const dropdowns = [...document.querySelectorAll(".filter__dropdown__list")];
-	dropdowns.forEach((d) => {
-		[...d.children].forEach((opt) => {
-			if (opt.classList.contains("filter__dropdown__option--selected")) {
-				opt.classList.remove("filter__dropdown__option--selected");
-				opt.querySelector(".fi").remove();
-			}
-		});
+	const selectedOpt = [...document.querySelectorAll(".filter__dropdown__option--selected")];
+	console.log(selectedOpt);
+	selectedOpt.forEach((opt) => {
+		opt.classList.remove("filter__dropdown__option--selected");
+		opt.querySelector("svg").remove();
 	});
 };
 
@@ -93,9 +91,9 @@ const switchType = function () {
 	}
 };
 
-const flipIcon = function (icon) {
-	if (icon.className.includes("up")) icon.className = icon.className.replace("up", "down");
-	else icon.className = icon.className.replace("down", "up");
+const flipIcon = function (dropdown, icon) {
+	if (dropdown.className.includes("open")) icon.style.transform = "rotate(180deg)";
+	else icon.style.transform = "rotate(0deg)";
 };
 
 const closeDropdown = function (ignore) {
@@ -166,9 +164,9 @@ const activeFilters = function () {
 
 const ratingIcon = function (rating) {
 	if (!rating) return "";
-	else if (rating <= 45) return `<i class="fi fi-rs-sad"></i>`;
-	else if (rating >= 75) return `<i class="fi fi-rs-smile"></i>`;
-	else return `<i class="fi fi-rs-meh"></i>`;
+	else if (rating <= 45) return `<i data-feather="frown"></i>`;
+	else if (rating >= 75) return `<i data-feather="smile"></i>`;
+	else return `<i data-feather="meh"></i>`;
 };
 
 const generateGenreElements = function (listGenres, mediaGenres) {
@@ -247,7 +245,7 @@ const generateMediaCard = function (load = false) {
 									<div class="media__card__info__header-wrap">
 										<a href="#" class="media__card__info__title">${media.canonicalTitle}</a>
 										<p class="media__card__info__score">${ratingIcon(Number(media.averageRating))}
-										${media.averageRating ? Math.round(Number(media.averageRating)) + '%' : ""}</p>
+										${media.averageRating ? Math.round(Number(media.averageRating)) + "%" : ""}</p>
 									</div>
 									<div class="media__card__info__extra-wrap">
 										<p class="media__card__info__extra">
@@ -274,6 +272,7 @@ const generateMediaCard = function (load = false) {
 				} else {
 					container.innerHTML = cards;
 				}
+				feather.replace();
 
 				nextPage = data.links.next ? data.links.next : null;
 
@@ -296,8 +295,8 @@ mediaDropdownBtn.addEventListener("click", () => {
 	const dropdown = document.querySelector(".type__dropdown");
 	let dropdownIcon = mediaDropdownBtn.firstElementChild;
 	closeDropdown(dropdown);
-	flipIcon(dropdownIcon);
 	dropdown.classList.toggle("dropdown--open");
+	flipIcon(dropdown, dropdownIcon);
 });
 
 filterFields.addEventListener("click", (e) => {
@@ -307,9 +306,8 @@ filterFields.addEventListener("click", (e) => {
 
 	if (!dropdown.contains(e.target)) {
 		closeDropdown(dropdown);
-		flipIcon(dropdownIcon);
-
 		dropdown.classList.toggle("dropdown--open");
+		flipIcon(dropdown, dropdownIcon);
 	}
 });
 
@@ -323,7 +321,8 @@ sortBtn.addEventListener("click", (e) => {
 
 mediaDropdown.addEventListener("click", (e) => {
 	if (e.target.classList.contains("type__dropdown__option")) {
-		mediaDropdownBtn.innerHTML = `${e.target.textContent}<i class="fi fi-rs-angle-small-down media-type__icon"></i>`;
+		mediaDropdownBtn.innerHTML = `${e.target.textContent}<i data-feather="chevron-down" class="media-type__icon"></i>`;
+		feather.replace();
 		mediaType = e.target.textContent.toLowerCase();
 		closeDropdown();
 		reset();
@@ -334,10 +333,11 @@ mediaDropdown.addEventListener("click", (e) => {
 genreDropdown.addEventListener("click", (e) => {
 	if (e.target.classList.contains("filter__dropdown__option")) {
 		if (!e.target.classList.contains("filter__dropdown__option--selected")) {
-			e.target.insertAdjacentHTML("beforeend", '<i class="fi fi-rs-check"></i>');
+			e.target.insertAdjacentHTML("beforeend", `<i data-feather="check"></i>`);
+			feather.replace();
 			selectedGenres.add(e.target.textContent);
 		} else {
-			e.target.querySelector("i").remove();
+			e.target.querySelector("svg").remove();
 			selectedGenres.delete(e.target.textContent);
 		}
 		e.target.classList.toggle("filter__dropdown__option--selected");
@@ -351,15 +351,16 @@ typeDropdown.addEventListener("click", (e) => {
 	if (e.target.classList.contains("filter__dropdown__option")) {
 		if (!e.target.classList.contains("filter__dropdown__option--selected")) {
 			if (selectedType) {
-				selectedType.querySelector("i").remove();
+				selectedType.querySelector("svg").remove();
 				selectedType.classList.remove("filter__dropdown__option--selected");
 			}
 			selectedType = e.target;
-			selectedType.insertAdjacentHTML("beforeend", '<i class="fi fi-rs-check"></i>');
+			selectedType.insertAdjacentHTML("beforeend", `<i data-feather="check"></i>`);
+			feather.replace();
 			selectedType.classList.add("filter__dropdown__option--selected");
 			typeBox.querySelector(".field__placeholder").innerText = selectedType.textContent;
 		} else {
-			e.target.querySelector("i").remove();
+			e.target.querySelector("svg").remove();
 			e.target.classList.remove("filter__dropdown__option--selected");
 			selectedType = null;
 			typeBox.querySelector(".field__placeholder").innerText = "Any";
@@ -374,15 +375,16 @@ statusDropdown.addEventListener("click", (e) => {
 	if (e.target.classList.contains("filter__dropdown__option")) {
 		if (!e.target.classList.contains("filter__dropdown__option--selected")) {
 			if (selectedStatus) {
-				selectedStatus.querySelector("i").remove();
+				selectedStatus.querySelector("svg").remove();
 				selectedStatus.classList.remove("filter__dropdown__option--selected");
 			}
 			selectedStatus = e.target;
-			selectedStatus.insertAdjacentHTML("beforeend", '<i class="fi fi-rs-check"></i>');
+			selectedStatus.insertAdjacentHTML("beforeend", `<i data-feather="check"></i>`);
+			feather.replace();
 			selectedStatus.classList.add("filter__dropdown__option--selected");
 			statusBox.querySelector(".field__placeholder").innerText = selectedStatus.textContent;
 		} else {
-			e.target.querySelector("i").remove();
+			e.target.querySelector("svg").remove();
 			e.target.classList.remove("filter__dropdown__option--selected");
 			selectedStatus = null;
 			statusBox.querySelector(".field__placeholder").innerText = "Any";
@@ -396,7 +398,8 @@ statusDropdown.addEventListener("click", (e) => {
 sortDropdown.addEventListener("click", (e) => {
 	if (e.target.classList.contains("sort__dropdown__option")) {
 		activeSortTitle.dataset.sort = e.target.dataset.sort;
-		activeSortTitle.innerHTML = `<i class="fi fi-rs-sort"></i>${e.target.textContent}`;
+		activeSortTitle.innerHTML = `<i data-feather="code" class="sort-icon"></i>${e.target.textContent}`;
+		feather.replace();
 		closeDropdown();
 		generateMediaCard();
 	}
