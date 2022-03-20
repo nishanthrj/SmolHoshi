@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/anime.css'%}">
+{% endblock %}
+
+{% block scripts %}
+<script defer src="{% static 'js/anime.js' %}"></script>
+
+<script>
+	const animeId = "{{animeId|escapejs}}";
+</script>
+
+{% endblock %}
+
+{% block content %}
+{% endblock%}
