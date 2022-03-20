@@ -299,7 +299,7 @@ const generateMediaCard = function (load = false) {
 								</div>
 								<div class="media__card__info">
 									<div class="media__card__info__header-wrap">
-										<a href="#" class="media__card__info__title">${media.canonicalTitle}</a>
+										<a href="/${mediaType}/${x.id}/${media.slug}" class="media__card__info__title">${media.canonicalTitle}</a>
 										<p class="media__card__info__score">${ratingIcon(Number(media.averageRating))}
 										${media.averageRating ? Math.round(Number(media.averageRating)) + "%" : ""}</p>
 									</div>
