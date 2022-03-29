@@ -112,8 +112,9 @@
   width: 100%;
   color: var(--color-text-200);
 }
-.search-panel .search__field__container .field-wrap i {
-  padding-top: 0.4rem;
+.search-panel .search__field__container .field-wrap .search-icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 .search-panel .filter__field__container {
   display: grid;
