@@ -2,8 +2,7 @@
 * {
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .theme-dark {
@@ -28,13 +27,13 @@ body {
   background: var(--color-background-300);
   font-family: "Overpass", sans-serif;
   font-weight: 600;
-  -webkit-transition: 0.5s;
   transition: 0.5s;
   overflow-x: hidden;
 }
 
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 
 li {
@@ -47,11 +46,9 @@ svg {
 }
 
 .container {
-  display: -ms-grid;
   display: grid;
-  -ms-grid-columns: min-content auto;
-      grid-template-columns: -webkit-min-content auto;
-      grid-template-columns: min-content auto;
+  grid-template-columns: -webkit-min-content auto;
+  grid-template-columns: min-content auto;
 }
 
 .sidebar-container {
@@ -61,7 +58,6 @@ svg {
   background: var(--color-background-400);
   border-right: 1px solid var(--color-extra-500);
   z-index: 10;
-  -webkit-transition: 0.3s;
   transition: 0.3s;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -71,77 +67,56 @@ svg {
 
 .sidebar-space {
   width: 16rem;
-  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
 .sidebar {
   min-height: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   overflow: hidden;
 }
-
 .sidebar .logo {
   padding: 0 10rem 0 6rem;
 }
-
 .sidebar .logo img {
   margin-top: 1.2rem;
   width: 6rem;
 }
-
 .sidebar__list {
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--color-extra-500);
 }
-
 .sidebar__toggle {
   position: absolute;
   top: 2rem;
   left: 2rem;
   color: var(--color-text-500);
   cursor: pointer;
-  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
-
 .sidebar__toggle:hover {
   color: var(--color-text-100);
 }
-
 .sidebar__link {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: end;
+  align-items: end;
   padding: 1.15rem;
-  padding-left: .75rem;
+  padding-left: 0.75rem;
   font-size: 1.1rem;
   margin-left: 1.5rem;
   border-radius: 10px 0 0 10px;
   color: var(--color-text-500);
-  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
-
 .sidebar__link:hover {
   color: var(--color-text-100);
 }
-
 .sidebar__link__icon {
   margin-right: 1rem;
   width: 1.25rem;
   height: 1.55rem;
 }
-
 .sidebar__link__text {
   padding-left: 0.5rem;
   white-space: nowrap;
@@ -154,5 +129,4 @@ svg {
 .active {
   color: var(--color-text-100);
   background: var(--color-background-200);
-}
-/*# sourceMappingURL=main.css.map */
+}/*# sourceMappingURL=main.css.map */
