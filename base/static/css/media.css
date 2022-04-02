@@ -431,4 +431,61 @@
 }
 .info .trailer__clip img:hover {
   filter: brightness(50%);
+}
+
+.episodes,
+.chapters {
+  margin-top: 5rem;
+  width: min(70rem, 100%);
+}
+.episodes__heading,
+.chapters__heading {
+  text-transform: uppercase;
+  color: var(--color-text-100);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1rem;
+}
+.episodes__cards,
+.chapters__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 21rem);
+  gap: 2rem;
+  width: 100%;
+  overflow: hidden;
+}
+.episodes__card,
+.chapters__card {
+  gap: 1rem;
+  overflow: hidden;
+  color: var(--color-text-300);
+  line-height: 1.25rem;
+  text-transform: capitalize;
+}
+.episodes__card__cover,
+.chapters__card__cover {
+  overflow: hidden;
+  border-radius: 3px;
+  height: 11.8rem;
+  background: var(--color-background-200);
+}
+.episodes__card__cover img,
+.chapters__card__cover img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.episodes__card__number,
+.chapters__card__number {
+  margin-top: 0.4rem;
+  color: var(--color-text-500);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.episodes__card__title,
+.chapters__card__title {
+  color: var(--color-text-200);
 }/*# sourceMappingURL=media.css.map */

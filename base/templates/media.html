@@ -113,5 +113,20 @@
 			</div>
 		</div>
 	</div>
+
+	{% if mediaType == "anime" %}
+		<div class="tab episodes hidden">
+			<h1 class="episodes__heading">Episodes</h1>
+			<div class="episodes__cards">
+			</div>
+		</div>
+	{% else %}
+		<div class="tab chapters hidden">
+			<h1 class="chapters__heading">Chapters</h1>
+			<div class="chapters__cards">
+			</div>
+		</div>
+	{% endif %}
+	
 </div>
 {% endblock%}
