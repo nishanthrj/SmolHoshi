@@ -298,6 +298,8 @@ const generateMediaCard = function (load = false) {
 			.then((data) => {
 				data.data.forEach((x) => {
 					media = x.attributes;
+					if (media.subtype === 'music') return
+
 					cards += `<div class="media__card">
 								<div class="media__card__cover">
 									<img src="${media.posterImage.medium}" alt="">
