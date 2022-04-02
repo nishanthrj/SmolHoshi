@@ -15,3 +15,12 @@ def anime(request, animeId, slug):
         'title': title
     }
     return render(request, 'media.html', context=context)
+
+def manga(request, mangaId, slug):
+    title = slug.replace('-', ' ').title()
+    context = {
+        'mediaId': mangaId,
+        'mediaType': 'manga',
+        'title': title
+    }
+    return render(request, 'media.html', context=context)
