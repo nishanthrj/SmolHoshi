@@ -428,7 +428,7 @@ const renderContent = function () {
 		<div class="details__text__tags">
 			<strong>Tags</strong>
 			<span>${media.tags.join(", ")}</span>
-		</div>`.replace("undefined", "");
+		</div>`.replaceAll("undefined", "");
 
 	statsContainer.innerHTML = `<div class="stats__item completed">
 			<h6 class="stats__item__name">Completed</h6>
