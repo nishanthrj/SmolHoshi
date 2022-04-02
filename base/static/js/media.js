@@ -313,6 +313,37 @@ const formatExtrasCount = function () {
 	);
 };
 
+const updateStatsBar = function () {
+	let statsBarWidth = {
+		completed: "0%",
+		planning: "0%",
+		watching: "0%",
+		reading: "0%",
+		paused: "0%",
+		dropped: "0%",
+	};
+
+	statsBarWidth.completed = ((media.completed / media.popularity) * 100).toFixed(1) + "%";
+	statsBarWidth.planning = ((media.planning / media.popularity) * 100).toFixed(1) + "%";
+	statsBarWidth.paused = ((media.paused / media.popularity) * 100).toFixed(1) + "%";
+	statsBarWidth.dropped = ((media.dropped / media.popularity) * 100).toFixed(1) + "%";
+	if (mediaType === "anime") {
+		statsBarWidth.watching = ((media.watching / media.popularity) * 100).toFixed(1) + "%";
+	} else {
+		statsBarWidth.reading = ((media.reading / media.popularity) * 100).toFixed(1) + "%";
+	}
+
+	statsBar.querySelector(`.stats__bar__completed`).style.width = statsBarWidth.completed;
+	statsBar.querySelector(`.stats__bar__planning`).style.width = statsBarWidth.planning;
+	statsBar.querySelector(`.stats__bar__paused`).style.width = statsBarWidth.paused;
+	statsBar.querySelector(`.stats__bar__dropped`).style.width = statsBarWidth.dropped;
+	if (mediaType === "anime") {
+		statsBar.querySelector(`.stats__bar__watching`).style.width = statsBarWidth.watching;
+	} else {
+		statsBar.querySelector(`.stats__bar__reading`).style.width = statsBarWidth.reading;
+	}
+};
+
 const renderContent = function () {
 	posterContainer.innerHTML = `<img src="${media.poster}">`;
 
@@ -417,6 +448,8 @@ const renderContent = function () {
 			<h6 class="stats__item__name">Dropped</h6>
 			<p class="stats__item__value"><span>${media.dropped}</span> Users</p>
 		</div>`;
+
+	updateStatsBar()
 
 
 	let characterCards = generateCharacterCards();
