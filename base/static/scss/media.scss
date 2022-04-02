@@ -205,3 +205,59 @@
 		}
 	}
 }
+
+.characters {
+	margin-top: 5rem;
+	width: min(70rem, 100%);
+
+	&__heading {
+		text-transform: uppercase;
+		color: var(--color-text-100);
+		font-size: 1.2rem;
+		font-weight: 600;
+		letter-spacing: 0.1rem;
+		margin-bottom: 1rem;
+	}
+
+	&__cards {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	&__card {
+		gap: 1rem;
+		overflow: hidden;
+		color: var(--color-text-300);
+		line-height: 1.25rem;
+		width: 8rem;
+		text-transform: capitalize;
+
+		&__img {
+			overflow: hidden;
+			border-radius: 3px;
+			height: 12.4rem;
+			background: var(--color-background-200);
+
+			img {
+				display: block;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+
+		&__name {
+			margin-top: 0.4rem;
+			color: var(--color-text-200);
+		}
+
+		&__voice {
+			color: var(--color-text-500);
+			font-size: 0.85rem;
+			font-weight: 500;
+		}
+	}
+}
