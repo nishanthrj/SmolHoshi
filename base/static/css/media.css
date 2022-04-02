@@ -488,4 +488,10 @@
 .episodes__card__title,
 .chapters__card__title {
   color: var(--color-text-200);
+}
+
+.error-message {
+  color: var(--color-text-500);
+  font-size: 0.95rem;
+  font-weight: 500;
 }/*# sourceMappingURL=media.css.map */
