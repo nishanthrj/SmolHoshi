@@ -309,4 +309,34 @@
 			}
 		}
 	}
+
+	.trailer {
+		&__heading {
+			text-transform: uppercase;
+			color: var(--color-text-100);
+			font-size: 1.2rem;
+			font-weight: 600;
+			letter-spacing: 0.1rem;
+			margin-bottom: 1rem;
+		}
+
+		&__clip {
+			overflow: hidden;
+			display: inline-block;
+			border-radius: 5px;
+			width: min(100%, 30rem);
+
+			img {
+				display: block;
+				height: 100%;
+				width: 100%;
+				object-fit: fill;
+				transition: 0.3s;
+
+				&:hover {
+					filter: brightness(50%);
+				}
+			}
+		}
+	}
 }

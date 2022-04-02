@@ -1,20 +1,34 @@
-{% extends 'main.html' %} 
-{% load static %} 
+{% extends 'main.html' %}
+{% load static %}
 
-{% block title %} {{title}} {% endblock %} 
+{% block title %} {{title}} {% endblock %}
 
 {% block styles %}
-	<link rel="stylesheet" href="{% static 'css/media.css'%}" />
-{% endblock %} 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"/>
+
+<link rel="stylesheet" href="{% static 'css/media.css'%}">
+{% endblock %}
 
 {% block scripts %}
-	<script defer src="{% static 'js/media.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 
-	<script>
-		const mediaType = "{{mediaType|escapejs}}";
-		const mediaId = "{{mediaId|escapejs}}";
-	</script>
-{% endblock %} 
+<script defer src="{% static 'js/media.js' %}"></script>
+
+<script>
+	const mediaType = "{{mediaType|escapejs}}"
+	const mediaId = "{{mediaId|escapejs}}";
+</script>
+
+<script defer>
+	Fancybox.bind("[data-fancybox]", {
+		Html: {
+			video: {
+				autoplay: false,
+			},
+		},
+	});
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="content content--hidden">
@@ -75,6 +89,12 @@
 				<div class="details__text">
 				</div>
 			</div>
+
+			{% if mediaType == "anime" %}
+				<div class="trailer">
+				</div>
+			{% endif %}
+
 		</div>
 	</div>
 </div>
