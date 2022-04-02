@@ -448,3 +448,21 @@ const main = function () {
 };
 
 setTimeout(main, 1000);
+
+
+const switchTab = function (selected) {
+	if (selected.classList.contains("navbar__link")) {
+		let selectedTab = document.querySelector(`.tab.${selected.dataset.tab}`);
+		tabs.forEach((t) => {
+			if (t !== selectedTab) {
+				t.classList.add("hidden");
+			}
+			document
+				.querySelector(".navbar__link--active")
+				.classList.remove("navbar__link--active");
+			selected.classList.add("navbar__link--active");
+			selectedTab.classList.remove("hidden");
+		});
+	}
+};
+navbar.addEventListener("click", (e) => switchTab(e.target));
