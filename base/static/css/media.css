@@ -137,11 +137,11 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
-.header .add-to-list {
+.header .list-action {
   width: 13rem;
   box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.15);
 }
-.header .add-to-list__btn {
+.header .list-action__btn {
   display: flex;
   padding: 0.15rem 0.5rem 0.15rem 0.5rem;
   background: var(--color-background-200);
@@ -150,11 +150,11 @@
   align-items: center;
   justify-content: space-between;
 }
-.header .add-to-list__btn svg {
+.header .list-action__btn svg {
   height: 1.5rem;
   margin-top: 0.25rem;
 }
-.header .add-to-list .add-to-list__dropdown {
+.header .list-action .list-action__dropdown {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -171,27 +171,27 @@
   cursor: pointer;
   z-index: 100;
 }
-.header .add-to-list .add-to-list__dropdown__option {
+.header .list-action .list-action__dropdown__option {
   color: var(--color-text-400);
   margin: 0 1rem 0 1rem;
   padding: 0.2rem;
   transition: 0.15s;
 }
-.header .add-to-list .add-to-list__dropdown__option:hover {
+.header .list-action .list-action__dropdown__option:hover {
   color: var(--color-text-100);
   border-radius: 0.25rem;
   background: var(--color-background-300);
 }
-.header .add-to-list .dropdown--open {
+.header .list-action .dropdown--open {
   display: flex;
   height: 6rem;
   padding: 1rem 0;
   box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.25);
 }
-.header .add-to-list .dropdown--open::-webkit-scrollbar {
+.header .list-action .dropdown--open::-webkit-scrollbar {
   width: 0.3rem;
 }
-.header .add-to-list__dropdown.dropdown--open {
+.header .list-action__dropdown.dropdown--open {
   height: 10.5rem;
 }
 .header__text {

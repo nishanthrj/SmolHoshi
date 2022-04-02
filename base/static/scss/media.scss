@@ -48,7 +48,7 @@
 		}
 	}
 
-	.add-to-list {
+	.list-action{
 		width: 13rem;
 		box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.15);
 
@@ -67,7 +67,7 @@
 			}
 		}
 
-		@include styleDropdown(add-to-list__dropdown, 12rem, 0.2rem, 1rem);
+		@include styleDropdown(list-action__dropdown, 12rem, 0.2rem, 1rem);
 
 		&__dropdown.dropdown--open {
 			height: 10.5rem;

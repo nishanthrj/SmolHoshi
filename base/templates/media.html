@@ -35,23 +35,23 @@
 	<div class="header">
 		<div class="header__poster">
 			<div class="header__poster__img"></div>
-			<div class="add-to-list">
-				<div class="add-to-list__btn">
-					<p class="add-to-list__placeholder">Add to List</p>
-					<div class="add-to-list__btn__icon">
+			<div class="list-action">
+				<div class="list-action__btn">
+					<p class="list-action__placeholder">Add to List</p>
+					<div class="list-action__btn__icon">
 						<i data-feather="chevron-down" class="drop-icon"></i>
 					</div>
 				</div>
-				<ul class="add-to-list__dropdown">
-					<li class="add-to-list__dropdown__option">Add to List</li>
+				<ul class="list-action__dropdown">
+					<li class="list-action__dropdown__option">Add to List</li>
 					{% if mediaType == "anime" %}
-					<li class="add-to-list__dropdown__option">Set as Watching</li>
+					<li class="list-action__dropdown__option">Set as Watching</li>
 					{% else %}
-					<li class="add-to-list__dropdown__option">Set as Reading</li>
+					<li class="list-action__dropdown__option">Set as Reading</li>
 					{% endif %}
-					<li class="add-to-list__dropdown__option">Set as Watching</li>
-					<li class="add-to-list__dropdown__option">Set as Planning</li>
-					<li class="add-to-list__dropdown__option">Open List Editor</li>
+					<li class="list-action__dropdown__option">Set as Watching</li>
+					<li class="list-action__dropdown__option">Set as Planning</li>
+					<li class="list-action__dropdown__option">Open List Editor</li>
 				</ul>
 			</div>
 		</div>
