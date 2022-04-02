@@ -77,6 +77,8 @@ let media = {
 	recommended: [],
 };
 
+
+
 const getSeason = function (year, month) {
 	const seasons = ["Winter", "Spring", "Summer", "Fall"];
 	return `${seasons[Math.floor(Number(month) / 3)]} ${year}`;
@@ -144,6 +146,94 @@ const parseIncluded = function (data) {
 	});
 };
 
+
+const fetchEpisodes = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/videos`)
+		.then((res) => res.json())
+		.then((data) => {
+			media.trailerId = data.data.promo[0]?.trailer.youtube_id;
+			episodes = data.data.episodes;
+			episodes.forEach((e) => {
+				media.episodes.push({
+					episode: e.episode,
+					title: e.title,
+					cover: e.images.jpg.image_url?.replace("large", "fwide"),
+				});
+			});
+			media.episodes.reverse();
+		});
+};
+
+const fetchCharacters = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/characters`)
+		.then((res) => res.json())
+		.then((data) => {
+			characters = data.data;
+			characters.forEach((c) => {
+				media.characters.push({
+					id: c.character.mal_id,
+					name: c.character.url.split("/").at(-1).replaceAll("_", " "),
+					image: c.character.images.jpg.image_url,
+					voice: c?.voice_actors[0]?.person.url.split("/").at(-1).replaceAll("_", " "),
+				});
+			});
+		});
+};
+
+const fetchStats = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/statistics`)
+		.then((res) => res.json())
+		.then((data) => {
+			stats = data.data;
+			media.popularity = stats.total;
+			media.completed = stats.completed;
+			media.planning = stats.plan_to_watch;
+			media.paused = stats.on_hold;
+			media.dropped = stats.dropped;
+			if (mediaType === "anime") {
+				media.watching = stats.watching;
+				media.planning = stats.plan_to_watch;
+			} else {
+				media.reading = stats.reading;
+				media.planning = stats.plan_to_read;
+			}
+		});
+};
+
+const fetchInfo = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}`)
+		.then((res) => res.json())
+		.then((data) => {
+			data = data.data;
+			media.source = data.source;
+			media.episodeCount = data.episodes;
+			media.chapterCount = data.chapters;
+			media.synopsis = data.synopsis?.replace("[Written by MAL Rewrite]", "");
+			media.en = data.title_english;
+			media.enjp = data.title;
+			media.jp = data.title_japanese;
+			media.score = data.score ? Math.round(data.score * 10) + "%" : "";
+			media.rating = data.rating;
+			media.trailerId = data.trailer?.youtube_id;
+			media.season = `${data.season} ${data.year}`;
+			media.publisher = data.serializations?.[0].name;
+			media.studio = data.studios?.[0].name;
+		});
+};
+
+const fetchMALData = function () {
+	if (media.malId) {
+		fetchInfo(media.malId);
+		fetchCharacters(media.malId);
+		fetchStats(media.malId);
+		setTimeout(() => {
+			if (mediaType === "anime") {
+				fetchEpisodes(media.malId);
+			}
+		}, 1500);
+	}
+};
+
 const main = function () {
 	let url = `https://kitsu.io/api/edge/${mediaType}/${mediaId}?include=categories,mappings,mediaRelationships.destination,productions.company`;
 	fetch(url)
@@ -151,6 +241,8 @@ const main = function () {
 		.then((data) => {
 			parseIncluded(data.included);
 			parseData(data.data);
+			fetchMALData();
+			setTimeout(renderContent, 1250);
 		});
 };
 
