@@ -1,0 +1,83 @@
+@mixin styleStats($element, $color) {
+	.#{$element} {
+		h6 {
+			background: $color;
+		}
+
+		span {
+			color: $color;
+			font-size: 1rem;
+		}
+	}
+}
+
+@mixin styleStatsBar($element, $color, $width){
+	.stats__bar__#{$element}{
+		width: $width;
+		background: $color;
+	}
+}
+
+.stats {
+	width: 30rem;
+
+	&__heading {
+		text-transform: uppercase;
+		color: var(--color-text-100);
+		font-size: 1.2rem;
+		font-weight: 600;
+		letter-spacing: 0.1rem;
+		margin-bottom: 1rem;
+	}
+
+	&__container {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		background: var(--color-background-200);
+		padding: 1.5rem;
+		border-radius: 5px 5px 0 0;
+
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		color: var(--color-text-300);
+		font-weight: 500;
+		font-size: 0.85rem;
+
+		h6 {
+			font-size: .95rem;
+			color: #fff;
+			font-weight: 500;
+			padding: .35rem .75rem;
+			margin-bottom: 0.5rem;
+			border-radius: 3px;
+		}
+	}
+
+	@include styleStats(completed, #68d639);
+	@include styleStats(planning, #02a9ff);
+	@include styleStats(current, #9256f3);
+	@include styleStats(dropped, #e74c66);
+
+
+	&__bar{
+		height: 100%;
+		display: flex;
+
+		div{
+			height: .5rem;
+		}
+
+		@include styleStatsBar(completed, #68d639, 20%);
+		@include styleStatsBar(planning, #02a9ff, 20%);
+		@include styleStatsBar(watching, #9256f3, 20%);
+		@include styleStatsBar(reading, #9256f3, 20%);
+		@include styleStatsBar(paused, #e6e63e, 20%);
+		@include styleStatsBar(dropped, #e74c66, 20%);
+
+	}
+}

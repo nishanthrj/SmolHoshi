@@ -1,3 +1,98 @@
+.stats {
+  width: 30rem;
+}
+.stats__heading {
+  text-transform: uppercase;
+  color: var(--color-text-100);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1rem;
+}
+.stats__container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--color-background-200);
+  padding: 1.5rem;
+  border-radius: 5px 5px 0 0;
+}
+.stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-text-300);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+.stats__item h6 {
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 3px;
+}
+.stats .completed h6 {
+  background: #68d639;
+}
+.stats .completed span {
+  color: #68d639;
+  font-size: 1rem;
+}
+.stats .planning h6 {
+  background: #02a9ff;
+}
+.stats .planning span {
+  color: #02a9ff;
+  font-size: 1rem;
+}
+.stats .current h6 {
+  background: #9256f3;
+}
+.stats .current span {
+  color: #9256f3;
+  font-size: 1rem;
+}
+.stats .dropped h6 {
+  background: #e74c66;
+}
+.stats .dropped span {
+  color: #e74c66;
+  font-size: 1rem;
+}
+.stats__bar {
+  height: 100%;
+  display: flex;
+}
+.stats__bar div {
+  height: 0.5rem;
+}
+.stats__bar .stats__bar__completed {
+  width: 20%;
+  background: #68d639;
+}
+.stats__bar .stats__bar__planning {
+  width: 20%;
+  background: #02a9ff;
+}
+.stats__bar .stats__bar__watching {
+  width: 20%;
+  background: #9256f3;
+}
+.stats__bar .stats__bar__reading {
+  width: 20%;
+  background: #9256f3;
+}
+.stats__bar .stats__bar__paused {
+  width: 20%;
+  background: #e6e63e;
+}
+.stats__bar .stats__bar__dropped {
+  width: 20%;
+  background: #e74c66;
+}
+
 .content {
   display: flex;
   flex-direction: column;

@@ -95,6 +95,22 @@
 				</div>
 			{% endif %}
 
+			<div class="stats">
+				<h1 class="stats__heading">Stats</h1>
+				<div class="stats__container">
+				</div>
+				<div class="stats__bar">
+					<div class="stats__bar__completed"></div>
+					<div class="stats__bar__planning"></div>
+					{% if mediaType == "anime" %}
+						<div class="stats__bar__watching"></div>
+					{% else %}
+						<div class="stats__bar__reading"></div>
+					{% endif %}
+					<div class="stats__bar__paused"></div>
+					<div class="stats__bar__dropped"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
