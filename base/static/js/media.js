@@ -175,7 +175,7 @@ const fetchCharacters = function (id) {
 					id: c.character.mal_id,
 					name: c.character.url.split("/").at(-1).replaceAll("_", " "),
 					image: c.character.images.jpg.image_url,
-					voice: c?.voice_actors[0]?.person.url.split("/").at(-1).replaceAll("_", " "),
+					voice: c.voice_actors?.[0]?.person.url.split("/").at(-1).replaceAll("_", " "),
 				});
 			});
 		});
