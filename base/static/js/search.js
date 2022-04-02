@@ -243,23 +243,25 @@ const generateGenreElements = function (mediaGenres) {
 const formatExtraInfo = function (media) {
 	if (media.subtype === "TV") {
 		return (
-			`${media.episodeCount ? " • " + media.episodeCount + " Episode" : ""}` +
-			`${media.episodeCount > 1 ? "s" : ""}`
+			`${media.episodeCount ? media.episodeCount + " Episode" : ""}` +
+			`${media.episodeCount > 1 ? "s" : ""}` +
+			`${media.episodeCount ? " • " : ""}`
 		);
 	} else if (media.subtype === "movie") {
 		let hour = Math.floor(media.totalLength / 60);
 		let minutes = Math.floor(media.totalLength % 60);
 		return (
-			`${hour || minutes ? " • " : ""}` +
 			`${hour ? hour + " Hour" : ""}` +
 			`${hour > 1 ? "s" : ""}` +
 			`${minutes ? " " + minutes + " Minute" : ""}` +
-			`${minutes > 1 ? "s" : ""}`
+			`${minutes > 1 ? "s" : ""}` +
+			`${hour || minutes ? " • " : ""}`
 		);
 	}
 	return (
-		`${media.chapterCount ? " • " + media.chapterCount + " Chapter" : ""}` +
-		`${media.chapterCount > 1 ? "s" : ""}`
+		`${media.chapterCount ? media.chapterCount + " Chapter" : ""}` +
+		`${media.chapterCount > 1 ? "s" : ""}` +
+		`${media.chapterCount ? " • " : ""}`
 	);
 };
 
@@ -298,7 +300,8 @@ const generateMediaCard = function (load = false) {
 			.then((data) => {
 				data.data.forEach((x) => {
 					media = x.attributes;
-					if (media.subtype === 'music') return
+
+					if (media.subtype === "music") return;
 
 					cards += `<div class="media__card">
 								<div class="media__card__cover">
@@ -306,16 +309,16 @@ const generateMediaCard = function (load = false) {
 								</div>
 								<div class="media__card__info">
 									<div class="media__card__info__header-wrap">
-										<a href="/${mediaType}/${x.id}/${media.slug}" class="media__card__info__title">${
-						media.canonicalTitle
-					}</a>
+										<a href="/${mediaType}/${x.id}/${media.slug}" 
+											class="media__card__info__title">
+											${media.canonicalTitle}
+										</a>
 										<p class="media__card__info__score">${ratingIcon(Number(media.averageRating))}
 										${media.averageRating ? Math.round(Number(media.averageRating)) + "%" : ""}</p>
 									</div>
 									<div class="media__card__info__extra-wrap">
 										<p class="media__card__info__extra">
-										${media.subtype}
-										${formatExtraInfo(media)}
+										${media.subtype} • ${formatExtraInfo(media)} ${media.status}
 										</p>
 									</div>
 									<div class="media__card__info__genres-wrap">${generateGenreElements(

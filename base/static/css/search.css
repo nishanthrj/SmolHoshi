@@ -395,6 +395,7 @@
 .results .media__card__info__extra {
   font-size: 0.8rem;
   color: var(--color-text-500);
+  text-transform: capitalize;
 }
 .results .media__card__info__genres-wrap {
   margin-top: 0.5rem;
