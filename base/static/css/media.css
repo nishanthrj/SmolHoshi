@@ -153,4 +153,68 @@
 }
 .navbar__link--active {
   color: var(--color-text-100);
+}
+
+.relations {
+  margin-top: 5rem;
+  width: 100%;
+}
+.relations__heading {
+  text-transform: uppercase;
+  color: var(--color-text-100);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1rem;
+}
+.relations__media__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 30rem);
+  gap: 2rem;
+  width: 100%;
+  overflow: hidden;
+}
+.relations__media__card {
+  display: grid;
+  grid-template-columns: 6.5rem auto;
+  gap: 1rem;
+  height: 8rem;
+  overflow: hidden;
+  background: var(--color-background-200);
+  color: var(--color-text-300);
+  line-height: 1.25rem;
+  border-radius: 5px;
+}
+.relations__media__card__cover {
+  overflow: hidden;
+}
+.relations__media__card__cover img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.relations__media__card__text {
+  display: flex;
+  flex-direction: column;
+  margin: 0.75rem 0;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  text-transform: capitalize;
+  width: 100%;
+}
+.relations__media__card__text__relation {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.relations__media__card__text__title {
+  margin-top: 0.25rem;
+  color: var(--color-text-100);
+}
+.relations__media__card__text__extras {
+  font-size: 0.75rem;
+  margin-top: auto;
+  font-weight: 400;
 }/*# sourceMappingURL=media.css.map */

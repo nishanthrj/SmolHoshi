@@ -13,8 +13,7 @@ styles %}
 <div class="content content--hidden">
 	<div class="header">
 		<div class="header__poster">
-			<div class="header__poster__img">
-			</div>
+			<div class="header__poster__img"></div>
 			<div class="add-to-list">
 				<div class="add-to-list__btn">
 					<p class="add-to-list__placeholder">Add to List</p>
@@ -35,20 +34,26 @@ styles %}
 				</ul>
 			</div>
 		</div>
-		<div class="header__text">
-		</div>
+		<div class="header__text"></div>
 	</div>
 
 	<nav class="navbar">
 		<a class="navbar__link navbar__link--active" data-tab="overview">Overview</a>
 		{% if mediaType == "anime" %}
-			<a class="navbar__link" data-tab="episodes">Episodes</a>
+		<a class="navbar__link" data-tab="episodes">Episodes</a>
 		{% else %}
-			<a class="navbar__link" data-tab="chapters">Chapters</a>
+		<a class="navbar__link" data-tab="chapters">Chapters</a>
 		{% endif %}
 		<a class="navbar__link" data-tab="characters">Characters</a>
 		<a class="navbar__link" data-tab="stats">Stats</a>
 		<a class="navbar__link" data-tab="reviews">Reviews</a>
 	</nav>
+	<div class="tab overview">
+		<div class="relations">
+			<h1 class="relations__heading">Relations</h1>
+			<div class="relations__media__cards">
+			</div>
+		</div>
+	</div>
 </div>
-	{% endblock%}
+{% endblock%}
