@@ -4,5 +4,5 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('search/', views.search, name='search'),
-    path('anime/<mediaId>/<slug>/', views.anime, name='anime')
+    path('anime/<animeId>/<slug>/', views.anime, name='anime'),
 ]

@@ -7,10 +7,11 @@ def home(request):
 def search(request):
     return render(request, 'search.html')
 
-def anime(request, mediaId, slug):
+def anime(request, animeId, slug):
     title = slug.replace('-', ' ').title()
     context = {
-        'animeId': mediaId,
+        'mediaId': animeId,
+        'mediaType': 'anime',
         'title': title
     }
-    return render(request, 'anime.html', context=context)
+    return render(request, 'media.html', context=context)
