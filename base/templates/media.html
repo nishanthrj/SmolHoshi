@@ -4,16 +4,17 @@
 {% block title %} {{title}} {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static 'css/anime.css'%}">
+
+<link rel="stylesheet" href="{% static 'css/media.css'%}">
 {% endblock %}
 
 {% block scripts %}
-<script defer src="{% static 'js/anime.js' %}"></script>
+<script defer src="{% static 'js/media.js' %}"></script>
 
 <script>
-	const animeId = "{{animeId|escapejs}}";
+	const mediaType = "{{mediaType|escapejs}}"
+	const mediaId = "{{mediaId|escapejs}}";
 </script>
-
 {% endblock %}
 
 {% block content %}
