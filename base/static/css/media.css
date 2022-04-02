@@ -133,4 +133,24 @@
   margin-top: 1.5rem;
   line-height: 1.25rem;
   color: var(--color-text-200);
+}
+
+.navbar {
+  display: flex;
+  width: min(50rem, 100%);
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem auto;
+}
+.navbar__link {
+  color: var(--color-text-400);
+  transition: 0.3s;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.navbar__link:hover {
+  color: var(--color-text-100);
+}
+.navbar__link--active {
+  color: var(--color-text-100);
 }/*# sourceMappingURL=media.css.map */

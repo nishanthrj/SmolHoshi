@@ -113,3 +113,26 @@
 		}
 	}
 }
+
+.navbar {
+	display: flex;
+	width: min(50rem, 100%);
+	align-items: center;
+	justify-content: space-between;
+	margin: 0.5rem auto;
+
+	&__link {
+		color: var(--color-text-400);
+		transition: 0.3s;
+		font-weight: 500;
+		font-size: 0.95rem;
+
+		&:hover {
+			color: var(--color-text-100);
+		}
+
+		&--active {
+			color: var(--color-text-100);
+		}
+	}
+}

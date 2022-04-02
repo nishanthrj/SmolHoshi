@@ -38,5 +38,17 @@ styles %}
 		<div class="header__text">
 		</div>
 	</div>
+
+	<nav class="navbar">
+		<a class="navbar__link navbar__link--active" data-tab="overview">Overview</a>
+		{% if mediaType == "anime" %}
+			<a class="navbar__link" data-tab="episodes">Episodes</a>
+		{% else %}
+			<a class="navbar__link" data-tab="chapters">Chapters</a>
+		{% endif %}
+		<a class="navbar__link" data-tab="characters">Characters</a>
+		<a class="navbar__link" data-tab="stats">Stats</a>
+		<a class="navbar__link" data-tab="reviews">Reviews</a>
+	</nav>
 </div>
 	{% endblock%}
