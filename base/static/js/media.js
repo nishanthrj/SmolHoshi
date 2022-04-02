@@ -234,6 +234,204 @@ const fetchMALData = function () {
 	}
 };
 
+
+
+const generateGenreElements = function () {
+	return media.genres
+		.map((g) => `<span class="header__text__genre__item">${g}</span>`)
+		.join("\n");
+};
+
+const generateRelationCards = function () {
+	if (!media.relations.length)
+		return [`<p class="error-message">We couldn't find any related media.</p>`];
+	return media.relations.map((r) => {
+		return `<div class="relations__media__card">
+				<div class="relations__media__card__cover">
+					<img src="${r.poster}"/>
+				</div>
+				<div class="relations__media__card__text">
+					<p class="relations__media__card__text__relation">${r.relation}</p>
+					<a href="/${r.format}/${r.id}/${r.slug}" class="relations__media__card__text__title">${r.title}</a>
+					<p class="relations__media__card__text__extras">${r.type} • ${r.status}</p>
+				</div>
+			</div>`;
+	});
+};
+
+const generateEpisodeCards = function () {
+	if (!media.episodes.length)
+		return [`<p class="error-message">We couldn't find any Episodes.</p>`];
+	return media.episodes.map((e) => {
+		return `<div class="episodes__card">
+		<div class="episodes__card__cover">
+		${e.cover ? `<img src="${e.cover}"/>` : ""}
+		</div>
+		<p class="episodes__card__number">${e.episode}</p>
+		<p class="episodes__card__title">${e.title}</p>
+		</div>`;
+	});
+};
+
+const generateCharacterCards = function () {
+	if (!media.characters.length)
+		return [`<p class="error-message">We couldn't find any Characters</p>`];
+	return media.characters.map((c) => {
+		return `<div class="characters__card">
+				<div class="characters__card__img">
+				${!c.image.includes("questionmark") ? `<img src="${c.image}"/>` : ""}
+				</div>
+				<p class="characters__card__name">${c.name}</p>
+				<p class="characters__card__voice">${c.voice ? c.voice : ""}</p>
+			</div>`;
+	});
+};
+
+const formatExtrasCount = function () {
+	if (media.type === "TV") {
+		return (
+			`${media.episodeCount ? media.episodeCount + " Episode" : ""}` +
+			`${media.episodeCount > 1 ? "s" : ""}` +
+			`${media.episodeCount ? " • " : ""}`
+		);
+	} else if (media.type === "movie") {
+		let hour = Math.floor(media.runtime / 60);
+		let minutes = Math.floor(media.runtime % 60);
+		return (
+			`${hour ? hour + " Hour" : ""}` +
+			`${hour > 1 ? "s" : ""}` +
+			`${minutes ? " " + minutes + " Minute" : ""}` +
+			`${minutes > 1 ? "s" : ""}` +
+			`${hour || minutes ? " • " : ""}`
+		);
+	}
+	return (
+		`${media.chapterCount ? media.chapterCount + " Chapter" : ""}` +
+		`${media.chapterCount > 1 ? "s" : ""}` +
+		`${media.chapterCount ? " • " : ""}`
+	);
+};
+
+const renderContent = function () {
+	posterContainer.innerHTML = `<img src="${media.poster}">`;
+
+	headerTextContainer.innerHTML = `<p class="header__text__${
+		mediaType === "anime" ? "studio" : "publisher"
+	}">
+			${mediaType === "anime" ? media.studio : media.publisher}
+		</p>
+		<h1 class="header__text__title">${media.title}</h1>
+		<p class="header__text__extras">${media.type} • ${formatExtrasCount()} ${media.status}</p>
+		<div class="header__text__genre">
+			${generateGenreElements()}
+		</div>
+		<p class="header__text__synopsis">${media.synopsis ? media.synopsis : ""}
+		</p>`;
+
+	relationsContainer.innerHTML = generateRelationCards().join("\n");
+
+	detailsContainer.innerHTML = `<div class="details__text__en">
+			<strong>English</strong>
+			<span>${media.en}</span>
+		</div>
+		<div class="details__text__enjp">
+			<strong>Romaji</strong>
+			<span>${media.enjp}</span>
+		</div>
+		<div class="details__text__jp">
+			<strong>Native</strong>
+			<span>${media.jp}</span>
+		</div>
+		<div class="details__text__format">
+			<strong>Format</strong>
+			<span>${media.type}</span>
+		</div>
+		${
+			media.type !== "movie"
+				? `<div class="details__text__${mediaType === "anime" ? "episodes" : "chapters"}">
+					<strong>${mediaType === "anime" ? "Episodes" : "Chapters"}</strong>
+					<span>${formatExtrasCount().replace(" • ", "")}</span>
+				</div>`
+				: `<div class="details__text__runtime">
+					<strong>Runtime</strong>
+					<span>${formatExtrasCount().replace(" • ", "")}</span>
+				</div>`
+		}
+		<div class="details__text__status">
+			<strong>Status</strong>
+			<span>${media.status}</span>
+		</div>
+		<div class="details__text__score">
+			<strong>Score</strong>
+			<span>${media.score}</span>
+		</div>
+		<div class="details__text__popularity">
+			<strong>Popularity</strong>
+			<span>${media.popularity}</span>
+		</div>
+		<div class="${mediaType === "anime" ? "studio" : "publisher"}">
+			<strong>${mediaType === "anime" ? "Studio" : "Publisher"}</strong>
+			<span>${mediaType === "anime" ? media.studio : media.publisher}</span>
+		</div>
+		${
+			mediaType === "anime"
+				? `${
+						media.type !== "movie"
+							? `<div class="details__text__season">
+									<strong>Season</strong>
+									<span>${media.season}</span>
+								</div>`
+							: ""
+				  }
+					<div class="details__text__rating">
+						<strong>Rating</strong>
+						<span>${media.rating}</span>
+					</div>`
+				: ""
+		}
+		<div class="details__text__genre">
+			<strong>Genre</strong>
+			<span>${media.genres.join(", ")}</span>
+		</div>
+		<div class="details__text__tags">
+			<strong>Tags</strong>
+			<span>${media.tags.join(", ")}</span>
+		</div>`.replace("undefined", "");
+
+	statsContainer.innerHTML = `<div class="stats__item completed">
+			<h6 class="stats__item__name">Completed</h6>
+			<p class="stats__item__value"><span>${media.completed}</span> Users</p>
+		</div>
+		<div class="stats__item planning">
+			<h6 class="stats__item__name">Planning</h6>
+			<p class="stats__item__value"><span>${media.planning}</span> Users</p>
+		</div>
+		<div class="stats__item current">
+			<h6 class="stats__item__name">${mediaType === "anime" ? "Watching" : "Reading"}</h6>
+			<p class="stats__item__value"><span>${
+				mediaType === "anime" ? media.watching : media.reading
+			}</span> Users</p>
+		</div>
+		<div class="stats__item dropped">
+			<h6 class="stats__item__name">Dropped</h6>
+			<p class="stats__item__value"><span>${media.dropped}</span> Users</p>
+		</div>`;
+
+
+	let characterCards = generateCharacterCards();
+	charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
+
+	if (mediaType === "anime") {
+		trailerContainer.innerHTML = `
+		<h1 class="trailer__heading">Trailer</h1>
+		<a class="trailer__clip" data-fancybox data-type="iframe" href="https://www.youtube.com/embed/${media.trailerId}">
+			<img class="trailer__clip__thumbnail" src="https://img.youtube.com/vi/${media.trailerId}/maxresdefault.jpg">
+		</a>`;
+	}
+
+	mainContainer.classList.remove("content--hidden");
+};
+
 const main = function () {
 	let url = `https://kitsu.io/api/edge/${mediaType}/${mediaId}?include=categories,mappings,mediaRelationships.destination,productions.company`;
 	fetch(url)
