@@ -161,6 +161,7 @@ const fetchEpisodes = function (id) {
 				});
 			});
 			media.episodes.reverse();
+			episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
 		});
 };
 
@@ -420,6 +421,8 @@ const renderContent = function () {
 
 	let characterCards = generateCharacterCards();
 	charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
+	charactersTabContainer.innerHTML = characterCards.join("\n");
+
 
 	if (mediaType === "anime") {
 		trailerContainer.innerHTML = `
