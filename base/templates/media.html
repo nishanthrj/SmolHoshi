@@ -1,15 +1,22 @@
-{% extends 'main.html' %} {% load static %} {% block title %} {{title}} {% endblock %} {% block
-styles %}
+{% extends 'main.html' %} 
+{% load static %} 
 
-<link rel="stylesheet" href="{% static 'css/media.css'%}" />
-{% endblock %} {% block scripts %}
-<script defer src="{% static 'js/media.js' %}"></script>
+{% block title %} {{title}} {% endblock %} 
 
-<script>
-	const mediaType = "{{mediaType|escapejs}}";
-	const mediaId = "{{mediaId|escapejs}}";
-</script>
-{% endblock %} {% block content %}
+{% block styles %}
+	<link rel="stylesheet" href="{% static 'css/media.css'%}" />
+{% endblock %} 
+
+{% block scripts %}
+	<script defer src="{% static 'js/media.js' %}"></script>
+
+	<script>
+		const mediaType = "{{mediaType|escapejs}}";
+		const mediaId = "{{mediaId|escapejs}}";
+	</script>
+{% endblock %} 
+
+{% block content %}
 <div class="content content--hidden">
 	<div class="header">
 		<div class="header__poster">
@@ -48,6 +55,7 @@ styles %}
 		<a class="navbar__link" data-tab="stats">Stats</a>
 		<a class="navbar__link" data-tab="reviews">Reviews</a>
 	</nav>
+
 	<div class="tab overview">
 		<div class="relations">
 			<h1 class="relations__heading">Relations</h1>
@@ -58,6 +66,14 @@ styles %}
 		<div class="characters">
 			<h1 class="characters__heading">Characters</h1>
 			<div class="characters__cards">
+			</div>
+		</div>
+
+		<div class="info">
+			<div class="details">
+				<h1 class="details__heading">Details</h1>
+				<div class="details__text">
+				</div>
 			</div>
 		</div>
 	</div>
