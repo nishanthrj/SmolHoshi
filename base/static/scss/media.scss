@@ -1,0 +1,115 @@
+@import "./dropdown";
+.content {
+	display: flex;
+	flex-direction: column;
+	padding: 3rem 3rem;
+	min-height: 100vh;
+	width: 100%;
+	gap: 1rem;
+
+	&--hidden {
+		display: none;
+	}
+}
+
+.hidden {
+	display: none;
+}
+
+.header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	height: max-content;
+	color: var(--color-text-100);
+	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--color-extra-300);
+	// justify-content: center;
+
+	&__poster {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		&__img {
+			overflow: hidden;
+			border-radius: 0.25rem;
+			width: 13rem;
+
+			img {
+				display: block;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+
+	.add-to-list {
+		width: 13rem;
+		box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.15);
+
+		&__btn {
+			display: flex;
+			padding: 0.15rem 0.5rem 0.15rem 0.5rem;
+			background: var(--color-background-200);
+			font-size: 1rem;
+			border-radius: 0.25rem;
+			align-items: center;
+			justify-content: space-between;
+
+			svg {
+				height: 1.5rem;
+				margin-top: 0.25rem;
+			}
+		}
+
+		@include styleDropdown(add-to-list__dropdown, 12rem, 0.2rem, 1rem);
+
+		&__dropdown.dropdown--open {
+			height: 10.5rem;
+		}
+	}
+
+	&__text {
+		width: min(100%, 55rem);
+		margin-top: 1rem;
+
+		&__studio,
+		&__publisher {
+			font-size: 0.8rem;
+			font-weight: 500;
+			color: var(--color-text-300);
+		}
+
+		&__extras {
+			font-size: 0.75rem;
+			margin-top: 0.2rem;
+			font-weight: 500;
+			color: var(--color-text-200);
+			text-transform: capitalize;
+		}
+
+		&__genre {
+			margin-top: 1.5rem;
+			width: 100%;
+
+			&__item {
+				background: var(--color-background-100);
+				padding: 6px;
+				font-weight: 500;
+				border-radius: 5px;
+				font-size: 0.75rem;
+				color: var(--color-text-100);
+			}
+		}
+
+		&__synopsis {
+			font-size: 0.85rem;
+			font-weight: 400;
+			margin-top: 1.5rem;
+			line-height: 1.25rem;
+			color: var(--color-text-200);
+		}
+	}
+}

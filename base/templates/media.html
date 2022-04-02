@@ -1,21 +1,42 @@
-{% extends 'main.html' %}
-{% load static %}
+{% extends 'main.html' %} {% load static %} {% block title %} {{title}} {% endblock %} {% block
+styles %}
 
-{% block title %} {{title}} {% endblock %}
-
-{% block styles %}
-
-<link rel="stylesheet" href="{% static 'css/media.css'%}">
-{% endblock %}
-
-{% block scripts %}
+<link rel="stylesheet" href="{% static 'css/media.css'%}" />
+{% endblock %} {% block scripts %}
 <script defer src="{% static 'js/media.js' %}"></script>
 
 <script>
-	const mediaType = "{{mediaType|escapejs}}"
+	const mediaType = "{{mediaType|escapejs}}";
 	const mediaId = "{{mediaId|escapejs}}";
 </script>
-{% endblock %}
-
-{% block content %}
-{% endblock%}
+{% endblock %} {% block content %}
+<div class="content content--hidden">
+	<div class="header">
+		<div class="header__poster">
+			<div class="header__poster__img">
+			</div>
+			<div class="add-to-list">
+				<div class="add-to-list__btn">
+					<p class="add-to-list__placeholder">Add to List</p>
+					<div class="add-to-list__btn__icon">
+						<i data-feather="chevron-down" class="drop-icon"></i>
+					</div>
+				</div>
+				<ul class="add-to-list__dropdown">
+					<li class="add-to-list__dropdown__option">Add to List</li>
+					{% if mediaType == "anime" %}
+					<li class="add-to-list__dropdown__option">Set as Watching</li>
+					{% else %}
+					<li class="add-to-list__dropdown__option">Set as Reading</li>
+					{% endif %}
+					<li class="add-to-list__dropdown__option">Set as Watching</li>
+					<li class="add-to-list__dropdown__option">Set as Planning</li>
+					<li class="add-to-list__dropdown__option">Open List Editor</li>
+				</ul>
+			</div>
+		</div>
+		<div class="header__text">
+		</div>
+	</div>
+</div>
+	{% endblock%}
