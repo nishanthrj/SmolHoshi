@@ -25,12 +25,24 @@ const query = document.querySelector("#query");
 let nextPage;
 let mediaType = mediaDropdownBtn.textContent.toLowerCase();
 
-// Grab only the Genres and not the Tags
-const allGenres = new Set(
-	[...genreDropdown.querySelectorAll(".filter__dropdown__option")]
-		.slice(0, 16)
-		.map((g) => g.textContent)
-);
+const allGenres = {
+	150: "Action",
+	157: "Adventure",
+	160: "Comedy",
+	184: "Drama",
+	162: "Ecchi",
+	156: "Fantasy",
+	158: "Horror",
+	132: "Music",
+	234: "Mystery",
+	232: "Psychological",
+	164: "Romance",
+	155: "Science Fiction",
+	169: "Slice of Life",
+	180: "Sports",
+	233: "Supernatural",
+	159: "Thriller",
+};
 
 /**
  * Resets everything back to Default.
@@ -209,24 +221,17 @@ const ratingIcon = function (rating) {
  * @param {object} mediaGenres All the genres of the specific media.
  * @returns {string} The collection of genre elements respective to specific media.
  */
-const generateGenreElements = function (listGenres, mediaGenres) {
+const generateGenreElements = function (mediaGenres) {
 	let tags = "";
 	let tagCount = 0;
 
-	// Checks if the id of the genre in the media matches with any genre in the collection to get the genre title.
-	for (let mg of mediaGenres) {
-		for (let lg of listGenres) {
-			if (mg && mg.id === lg.id) {
-				if (allGenres.has(lg.attributes.title)) {
-					tags += `<span class="media__card__info__genre">${lg.attributes.title}</span>\n`;
-					tagCount++;
-					break;
-				}
-			}
+	mediaGenres.forEach((g) => {
+		if (allGenres[g.id]) {
+			tags += `<span class="media__card__info__genre">${allGenres[g.id]}</span>\n`;
+			tagCount++;
 		}
-		// Ensure only four genre are displayed since elements might overflow on the card
 		if (tagCount >= 4) return tags;
-	}
+	});
 	return tags;
 };
 
@@ -282,10 +287,10 @@ const generateMediaCard = function (load = false) {
 	let url;
 	let cards = "";
 	const container = document.querySelector(".results");
-	
+
 	if (load) url = nextPage;
 	else url = constructUrl();
-	
+
 	// Add a delay on fetching data to avoid exhausting API rate.
 	setTimeout(() => {
 		fetch(url)
@@ -299,7 +304,9 @@ const generateMediaCard = function (load = false) {
 								</div>
 								<div class="media__card__info">
 									<div class="media__card__info__header-wrap">
-										<a href="/${mediaType}/${x.id}/${media.slug}" class="media__card__info__title">${media.canonicalTitle}</a>
+										<a href="/${mediaType}/${x.id}/${media.slug}" class="media__card__info__title">${
+						media.canonicalTitle
+					}</a>
 										<p class="media__card__info__score">${ratingIcon(Number(media.averageRating))}
 										${media.averageRating ? Math.round(Number(media.averageRating)) + "%" : ""}</p>
 									</div>
@@ -310,7 +317,6 @@ const generateMediaCard = function (load = false) {
 										</p>
 									</div>
 									<div class="media__card__info__genres-wrap">${generateGenreElements(
-										data.included,
 										x.relationships.categories.data
 									)}
 									</div>
@@ -343,7 +349,7 @@ const generateMediaCard = function (load = false) {
  * @param {object} entries The elements being observed by th observer.
  * @param {object} observer The Observer object.
  */
-const loadMedia = function (entries, observer) { 
+const loadMedia = function (entries, observer) {
 	if (entries[0].isIntersecting) {
 		// Stop observing the element when it comes into view once.
 		// This prevents the page from loading new media every time the element comes into view.
