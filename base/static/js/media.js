@@ -77,8 +77,6 @@ let media = {
 	recommended: [],
 };
 
-
-
 const getSeason = function (year, month) {
 	const seasons = ["Winter", "Spring", "Summer", "Fall"];
 	return `${seasons[Math.floor(Number(month) / 3)]} ${year}`;
@@ -144,14 +142,22 @@ const parseIncluded = function (data) {
 	media.relations.forEach((x, i) => {
 		media.relations[i].relation = mediaRelation.find((r) => r.id === x.id).role;
 	});
-};
 
+	relationsContainer.innerHTML = generateRelationCards().join("\n");
+};
 
 const fetchEpisodes = function (id) {
 	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/videos`)
 		.then((res) => res.json())
 		.then((data) => {
-			media.trailerId = data.data.promo[0]?.trailer.youtube_id;
+			media.trailerId = data.data?.promo[0]?.trailer.youtube_id;
+
+			for (let t of data.data.promo) {
+				if (t.title.includes("PV")) {
+					media.trailerId = t.trailer.youtube_id;
+					break;
+				}
+			}
 			episodes = data.data.episodes;
 			episodes.forEach((e) => {
 				media.episodes.push({
@@ -162,6 +168,14 @@ const fetchEpisodes = function (id) {
 			});
 			media.episodes.reverse();
 			episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
+
+			if (mediaType === "anime") {
+				trailerContainer.innerHTML = `
+				<h1 class="trailer__heading">Trailer</h1>
+				<a class="trailer__clip" data-fancybox data-type="iframe" href="https://www.youtube.com/embed/${media.trailerId}">
+					<img class="trailer__clip__thumbnail" src="https://img.youtube.com/vi/${media.trailerId}/maxresdefault.jpg">
+				</a>`;
+			}
 		});
 };
 
@@ -178,6 +192,10 @@ const fetchCharacters = function (id) {
 					voice: c.voice_actors?.[0]?.person.url.split("/").at(-1).replaceAll("_", " "),
 				});
 			});
+
+			let characterCards = generateCharacterCards();
+			charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
+			charactersTabContainer.innerHTML = characterCards.join("\n");
 		});
 };
 
@@ -198,6 +216,8 @@ const fetchStats = function (id) {
 				media.reading = stats.reading;
 				media.planning = stats.plan_to_read;
 			}
+
+			renderStats();
 		});
 };
 
@@ -217,8 +237,10 @@ const fetchInfo = function (id) {
 			media.rating = data.rating;
 			media.trailerId = data.trailer?.youtube_id;
 			media.season = `${data.season} ${data.year}`;
-			media.publisher = data.serializations?.[0].name;
-			media.studio = data.studios?.[0].name;
+			media.publisher = data.serializations?.[0]?.name;
+			media.studio = data.studios?.[0]?.name;
+
+			renderContent()
 		});
 };
 
@@ -231,11 +253,9 @@ const fetchMALData = function () {
 			if (mediaType === "anime") {
 				fetchEpisodes(media.malId);
 			}
-		}, 1500);
+		}, 1250);
 	}
 };
-
-
 
 const generateGenreElements = function () {
 	return media.genres
@@ -344,6 +364,29 @@ const updateStatsBar = function () {
 	}
 };
 
+const renderStats = function () {
+	statsContainer.innerHTML = `<div class="stats__item completed">
+			<h6 class="stats__item__name">Completed</h6>
+			<p class="stats__item__value"><span>${media.completed}</span> Users</p>
+		</div>
+		<div class="stats__item planning">
+			<h6 class="stats__item__name">Planning</h6>
+			<p class="stats__item__value"><span>${media.planning}</span> Users</p>
+		</div>
+		<div class="stats__item current">
+			<h6 class="stats__item__name">${mediaType === "anime" ? "Watching" : "Reading"}</h6>
+			<p class="stats__item__value"><span>${
+				mediaType === "anime" ? media.watching : media.reading
+			}</span> Users</p>
+		</div>
+		<div class="stats__item dropped">
+			<h6 class="stats__item__name">Dropped</h6>
+			<p class="stats__item__value"><span>${media.dropped}</span> Users</p>
+		</div>`;
+
+	updateStatsBar();
+};
+
 const renderContent = function () {
 	posterContainer.innerHTML = `<img src="${media.poster}">`;
 
@@ -358,9 +401,7 @@ const renderContent = function () {
 			${generateGenreElements()}
 		</div>
 		<p class="header__text__synopsis">${media.synopsis ? media.synopsis : ""}
-		</p>`;
-
-	relationsContainer.innerHTML = generateRelationCards().join("\n");
+		</p>`.replaceAll("undefined", "");
 
 	detailsContainer.innerHTML = `<div class="details__text__en">
 			<strong>English</strong>
@@ -430,42 +471,6 @@ const renderContent = function () {
 			<span>${media.tags.join(", ")}</span>
 		</div>`.replaceAll("undefined", "");
 
-	statsContainer.innerHTML = `<div class="stats__item completed">
-			<h6 class="stats__item__name">Completed</h6>
-			<p class="stats__item__value"><span>${media.completed}</span> Users</p>
-		</div>
-		<div class="stats__item planning">
-			<h6 class="stats__item__name">Planning</h6>
-			<p class="stats__item__value"><span>${media.planning}</span> Users</p>
-		</div>
-		<div class="stats__item current">
-			<h6 class="stats__item__name">${mediaType === "anime" ? "Watching" : "Reading"}</h6>
-			<p class="stats__item__value"><span>${
-				mediaType === "anime" ? media.watching : media.reading
-			}</span> Users</p>
-		</div>
-		<div class="stats__item dropped">
-			<h6 class="stats__item__name">Dropped</h6>
-			<p class="stats__item__value"><span>${media.dropped}</span> Users</p>
-		</div>`;
-
-	updateStatsBar()
-
-
-	let characterCards = generateCharacterCards();
-	charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
-	charactersTabContainer.innerHTML = characterCards.join("\n");
-
-
-	if (mediaType === "anime") {
-		trailerContainer.innerHTML = `
-		<h1 class="trailer__heading">Trailer</h1>
-		<a class="trailer__clip" data-fancybox data-type="iframe" href="https://www.youtube.com/embed/${media.trailerId}">
-			<img class="trailer__clip__thumbnail" src="https://img.youtube.com/vi/${media.trailerId}/maxresdefault.jpg">
-		</a>`;
-	}
-
-	mainContainer.classList.remove("content--hidden");
 };
 
 const main = function () {
@@ -476,12 +481,12 @@ const main = function () {
 			parseIncluded(data.included);
 			parseData(data.data);
 			fetchMALData();
-			setTimeout(renderContent, 1250);
+			mainContainer.classList.remove("content--hidden");
+			renderContent()
 		});
 };
 
 setTimeout(main, 1000);
-
 
 const switchTab = function (selected) {
 	if (selected.classList.contains("navbar__link")) {
