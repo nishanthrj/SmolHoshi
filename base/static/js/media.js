@@ -264,8 +264,6 @@ const generateGenreElements = function () {
 };
 
 const generateRelationCards = function () {
-	if (!media.relations.length)
-		return [`<p class="error-message">We couldn't find any related media.</p>`];
 	return media.relations.map((r) => {
 		return `<div class="relations__media__card">
 				<div class="relations__media__card__cover">
@@ -281,8 +279,6 @@ const generateRelationCards = function () {
 };
 
 const generateEpisodeCards = function () {
-	if (!media.episodes.length)
-		return [`<p class="error-message">We couldn't find any Episodes.</p>`];
 	return media.episodes.map((e) => {
 		return `<div class="episodes__card">
 		<div class="episodes__card__cover">
@@ -295,8 +291,6 @@ const generateEpisodeCards = function () {
 };
 
 const generateCharacterCards = function () {
-	if (!media.characters.length)
-		return [`<p class="error-message">We couldn't find any Characters</p>`];
 	return media.characters.map((c) => {
 		return `<div class="characters__card">
 				<div class="characters__card__img">
