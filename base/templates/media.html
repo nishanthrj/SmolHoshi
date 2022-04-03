@@ -94,12 +94,31 @@
 
 			{% if mediaType == "anime" %}
 				<div class="trailer">
+					<h1 class="trailer__heading">Trailer</h1>
+				<a class="trailer__clip">
+				</a>
 				</div>
 			{% endif %}
 
 			<div class="stats">
 				<h1 class="stats__heading">Stats</h1>
 				<div class="stats__container">
+					<div class="stats__item completed">
+						<h6 class="stats__item__name">Completed</h6>
+					</div>
+					<div class="stats__item planning">
+						<h6 class="stats__item__name">Planning</h6>
+					</div>
+					<div class="stats__item current">
+						{% if mediaType == "anime" %}
+							<h6 class="stats__item__name">Watching</h6>
+						{% else %}
+							<h6 class="stats__item__name">Reading</h6>
+						{% endif %}
+					</div>
+					<div class="stats__item dropped">
+						<h6 class="stats__item__name">Dropped</h6>
+					</div>
 				</div>
 				<div class="stats__bar">
 					<div class="stats__bar__completed"></div>
