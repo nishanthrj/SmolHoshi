@@ -271,7 +271,10 @@ const generateRelationCards = function () {
 				</div>
 				<div class="relations__media__card__text">
 					<p class="relations__media__card__text__relation">${r.relation}</p>
-					<a href="/${r.format}/${r.id}/${r.slug}" class="relations__media__card__text__title">${r.title}</a>
+					<a href="/${r.format}/${r.type}/${r.id}/${r.slug}" 
+					   class="relations__media__card__text__title">
+						${r.title}
+					</a>
 					<p class="relations__media__card__text__extras">${r.type} • ${r.status}</p>
 				</div>
 			</div>`;

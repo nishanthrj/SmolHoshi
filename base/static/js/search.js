@@ -309,7 +309,7 @@ const generateMediaCard = function (load = false) {
 								</div>
 								<div class="media__card__info">
 									<div class="media__card__info__header-wrap">
-										<a href="/${mediaType}/${x.id}/${media.slug}" 
+										<a href="/${mediaType}/${media.subtype}/${x.id}/${media.slug}" 
 											class="media__card__info__title">
 											${media.canonicalTitle}
 										</a>
