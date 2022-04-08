@@ -233,6 +233,7 @@ const fetchInfo = function (id) {
 			media.en = data.title_english;
 			media.enjp = data.title;
 			media.jp = data.title_japanese;
+			media.popularity = data.members;
 			media.score = data.score ? Math.round(data.score * 10) + "%" : "";
 			media.rating = data.rating;
 			media.trailerId = data.trailer?.youtube_id;
@@ -430,6 +431,10 @@ const renderContent = function () {
 		<div class="details__text__format">
 			<strong>Format</strong>
 			<span>${media.type}</span>
+		</div>
+		<div class="details__text__source">
+			<strong>Source</strong>
+			<span>${media.source}</span>
 		</div>
 		${
 			media.type !== "movie"
