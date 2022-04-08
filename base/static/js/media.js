@@ -401,6 +401,8 @@ const renderStats = function () {
 
 
 const renderContent = function () {
+	document.title = media.title + " | Hoshi"
+
 	posterContainer.innerHTML = `<img src="${media.poster}">`;
 
 	headerTextContainer.innerHTML = `<p class="header__text__${
