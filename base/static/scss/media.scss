@@ -1,7 +1,6 @@
 @import "./dropdown";
 @import "./stats";
 
-
 .content {
 	display: flex;
 	flex-direction: column;
@@ -48,7 +47,7 @@
 		}
 	}
 
-	.list-action{
+	.list-action {
 		width: 13rem;
 		box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.15);
 
@@ -398,6 +397,60 @@
 
 		&__title {
 			color: var(--color-text-200);
+		}
+	}
+}
+
+.recommended {
+	margin-top: 5rem;
+	width: min(70rem, 100%);
+
+	&__heading {
+		text-transform: uppercase;
+		color: var(--color-text-100);
+		font-size: 1.2rem;
+		font-weight: 600;
+		letter-spacing: 0.1rem;
+		margin-bottom: 1rem;
+	}
+
+	&__cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, 10rem);
+		gap: 2rem;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	&__card {
+		display: grid;
+		grid-template-rows: 15rem 3rem;
+		gap: 0.25rem;
+		color: var(--color-text-300);
+		line-height: 1.25rem;
+
+		&__cover {
+			overflow: hidden;
+			border-radius: 3px;
+			background: var(--color-background-200);
+
+			img {
+				display: block;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+
+		&__title {
+			overflow: hidden;
+			line-height: 1.4rem;
+			font-size: 0.85rem;
+			color: var(--color-text-500);
+			transition: .3s;
+			&:hover {
+				color: var(--color-text-100);
+			}
 		}
 	}
 }

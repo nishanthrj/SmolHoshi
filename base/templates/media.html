@@ -15,7 +15,7 @@
 <script defer src="{% static 'js/media.js' %}"></script>
 
 <script>
-	const mediaType = "{{mediaType|escapejs}}"
+	const mediaType = "{{mediaType|escapejs}}";
 	const mediaId = "{{mediaId|escapejs}}";
 </script>
 
@@ -131,6 +131,13 @@
 					<div class="stats__bar__paused"></div>
 					<div class="stats__bar__dropped"></div>
 				</div>
+			</div>
+		</div>
+
+		<div class="recommended">
+			<h1 class="recommended__heading">Recommended</h1>
+			<div class="recommended__cards">
+				<p class="error-message">We couldn't find any recommendations. (╥﹏╥)</p>
 			</div>
 		</div>
 	</div>

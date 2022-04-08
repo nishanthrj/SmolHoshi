@@ -493,6 +493,55 @@
   color: var(--color-text-200);
 }
 
+.recommended {
+  margin-top: 5rem;
+  width: min(70rem, 100%);
+}
+.recommended__heading {
+  text-transform: uppercase;
+  color: var(--color-text-100);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1rem;
+}
+.recommended__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 10rem);
+  gap: 2rem;
+  width: 100%;
+  overflow: hidden;
+}
+.recommended__card {
+  display: grid;
+  grid-template-rows: 15rem 3rem;
+  gap: 0.25rem;
+  color: var(--color-text-300);
+  line-height: 1.25rem;
+}
+.recommended__card__cover {
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--color-background-200);
+}
+.recommended__card__cover img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.recommended__card__title {
+  overflow: hidden;
+  line-height: 1.4rem;
+  font-size: 0.85rem;
+  color: var(--color-text-500);
+  transition: 0.3s;
+}
+.recommended__card__title:hover {
+  color: var(--color-text-100);
+}
+
 .error-message {
   color: var(--color-text-500);
   font-size: 0.95rem;
