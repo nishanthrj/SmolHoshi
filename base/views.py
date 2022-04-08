@@ -1,4 +1,6 @@
+import json
 from django.shortcuts import render
+from . import recommend
 
 # Create your views here.
 def home(request):
@@ -7,16 +9,18 @@ def home(request):
 def search(request):
     return render(request, 'search.html')
 
-def anime(request, animeId, slug):
+def anime(request, animeType, animeId, slug):
     title = slug.replace('-', ' ').title()
+    recommended_anime = json.dumps(recommend.recommend(int(animeId), animeType))
     context = {
         'mediaId': animeId,
         'mediaType': 'anime',
-        'title': title
+        'title': title,
+        'recommended': recommended_anime
     }
     return render(request, 'media.html', context=context)
 
-def manga(request, mangaId, slug):
+def manga(request, mangaType, mangaId, slug):
     title = slug.replace('-', ' ').title()
     context = {
         'mediaId': mangaId,
