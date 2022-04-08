@@ -302,6 +302,20 @@ const generateCharacterCards = function () {
 	});
 };
 
+const generateRecommendedCards = function(){
+	return JSON.parse(recommended).map(x => {
+		x = JSON.parse(x)
+		return `<div class="recommended__card">
+				<div class="recommended__card__cover">
+					<img src="${x.poster}">
+				</div>
+				<a href="/${mediaType}/${x.type}/${x.id}/${x.slug}"  
+					class="recommended__card__title">${x.title}</a>
+			</div>`
+	})
+}
+
+
 const formatExtrasCount = function () {
 	if (media.type === "TV") {
 		return (
@@ -380,6 +394,7 @@ const renderStats = function () {
 
 	updateStatsBar();
 };
+
 
 const renderContent = function () {
 	posterContainer.innerHTML = `<img src="${media.poster}">`;
@@ -464,6 +479,9 @@ const renderContent = function () {
 			<strong>Tags</strong>
 			<span>${media.tags.join(", ")}</span>
 		</div>`.replaceAll("undefined", "");
+
+
+	recommendedContainer.innerHTML = generateRecommendedCards().join("\n")
 
 };
 
