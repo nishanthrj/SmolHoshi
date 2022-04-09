@@ -254,7 +254,7 @@ const fetchMALData = function () {
 			if (mediaType === "anime") {
 				fetchEpisodes(media.malId);
 			}
-		}, 1250);
+		}, 2000);
 	}
 };
 
