@@ -365,6 +365,18 @@ const loadMedia = function (entries, observer) {
 
 const observer = new IntersectionObserver(loadMedia, { threshold: [0.5] });
 
+
+const debounce = function(func, timeout = 500){
+	let timer;
+	return (...args) => {
+	  clearTimeout(timer);
+	  timer = setTimeout(() => {
+		  func(...args)
+		}, timeout);
+	};
+  }
+
+
 mediaDropdownBtn.addEventListener("click", () => {
 	const dropdown = document.querySelector(".type__dropdown");
 	let dropdownIcon = mediaDropdownBtn.firstElementChild;
@@ -417,7 +429,7 @@ genreDropdown.addEventListener("click", (e) => {
 		e.target.classList.toggle("filter__dropdown__option--selected");
 		showMultiTags(selectedGenres);
 		activeFilters();
-		generateMediaCard();
+		debounce(generateMediaCard)();
 	}
 });
 
@@ -441,7 +453,7 @@ typeDropdown.addEventListener("click", (e) => {
 		}
 		closeDropdown();
 		activeFilters();
-		generateMediaCard();
+		debounce(generateMediaCard)();
 	}
 });
 
@@ -465,7 +477,7 @@ statusDropdown.addEventListener("click", (e) => {
 		}
 		closeDropdown();
 		activeFilters();
-		generateMediaCard();
+		debounce(generateMediaCard)();
 	}
 });
 
@@ -475,11 +487,12 @@ sortDropdown.addEventListener("click", (e) => {
 		activeSortTitle.innerHTML = `<i data-feather="code" class="sort-icon"></i>${e.target.textContent}`;
 		feather.replace();
 		closeDropdown();
-		generateMediaCard();
+		debounce(generateMediaCard)();
 	}
 });
 
+
 query.addEventListener("input", () => {
 	activeFilters();
-	if (query.value.length >= 3) generateMediaCard();
+	if (query.value.length >= 3) debounce(generateMediaCard)();
 });
