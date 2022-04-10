@@ -4,10 +4,8 @@ from . import recommend
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
-
-def search(request):
     return render(request, 'search.html')
+
 
 def anime(request, animeType, animeId, slug):
     recommended_anime = json.dumps(recommend.recommend(int(animeId), animeType))

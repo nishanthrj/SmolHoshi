@@ -35,25 +35,6 @@
 	<div class="header">
 		<div class="header__poster">
 			<div class="header__poster__img"></div>
-			<div class="list-action">
-				<div class="list-action__btn">
-					<p class="list-action__placeholder">Add to List</p>
-					<div class="list-action__btn__icon">
-						<i data-feather="chevron-down" class="drop-icon"></i>
-					</div>
-				</div>
-				<ul class="list-action__dropdown">
-					<li class="list-action__dropdown__option">Add to List</li>
-					{% if mediaType == "anime" %}
-					<li class="list-action__dropdown__option">Set as Watching</li>
-					{% else %}
-					<li class="list-action__dropdown__option">Set as Reading</li>
-					{% endif %}
-					<li class="list-action__dropdown__option">Set as Watching</li>
-					<li class="list-action__dropdown__option">Set as Planning</li>
-					<li class="list-action__dropdown__option">Open List Editor</li>
-				</ul>
-			</div>
 		</div>
 		<div class="header__text"></div>
 	</div>
@@ -66,8 +47,6 @@
 		<a class="navbar__link" data-tab="chapters">Chapters</a>
 		{% endif %}
 		<a class="navbar__link" data-tab="characters">Characters</a>
-		<a class="navbar__link" data-tab="stats">Stats</a>
-		<a class="navbar__link" data-tab="reviews">Reviews</a>
 	</nav>
 
 	<div class="tab overview">
