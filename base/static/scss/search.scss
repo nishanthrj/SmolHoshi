@@ -5,7 +5,7 @@
 	flex-direction: column;
 	padding: 3rem 3rem;
 	min-height: 100vh;
-	width: 100%;
+	width: 87%;
 	gap: 3rem;
 }
 
@@ -42,7 +42,7 @@
 
 .search-panel {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, 35rem);
+	grid-template-columns: repeat(auto-fit, 30rem);
 	column-gap: 1rem;
 	row-gap: 2rem;
 	width: 100%;
@@ -94,7 +94,7 @@
 		display: grid;
 		gap: 1rem;
 		font-size: 0.9rem;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, 11rem);
 
 		.field {
 			width: 100%;
@@ -191,8 +191,8 @@
 
 .filters-display {
 	display: grid;
-	grid-template-columns: 70% 30%;
-	gap: 4rem;
+	grid-template-columns: repeat(2, minmax(15rem, 35rem));
+	gap: 1rem;
 	font-size: 1rem;
 	color: var(--color-text-400);
 
@@ -224,6 +224,9 @@
 	}
 
 	.sort {
+		justify-self: end;
+		margin-right: 5rem;
+
 		&__method {
 			display: flex;
 			gap: 0.3rem;
@@ -250,20 +253,20 @@
 
 .results {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 35rem);
+	grid-template-columns: repeat(auto-fill, minmax(26rem, 35rem));
 	gap: 2rem;
 	width: 100%;
 	overflow: hidden;
 
 	.media__card {
 		display: grid;
-		grid-template-columns: 11.25rem auto;
-		height: 14.5rem;
+		grid-template-columns: 11.25em auto;
+		height: 14.5em;
 		overflow: hidden;
 		background: var(--color-background-200);
 		box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.25);
 		color: var(--color-text-200);
-		line-height: 1.25rem;
+		line-height: 1.25em;
 		border-radius: 5px;
 
 		&__cover {
@@ -277,17 +280,17 @@
 		}
 
 		&__info {
-			padding: 1rem;
+			padding: 1em;
 			height: 95%;
 			width: 100%;
 			overflow: hidden;
 
 			&__header-wrap {
 				display: flex;
-				gap: 1rem;
+				gap: 1em;
 				width: 100%;
 				justify-content: space-between;
-				padding-right: 0.5rem;
+				padding-right: 0.5em;
 			}
 
 			&__title {
@@ -301,40 +304,40 @@
 				display: flex;
 				align-items: end;
 				height: fit-content;
-				column-gap: 0.35rem;
+				column-gap: 0.35em;
 				font-weight: 600;
-				font-size: 1rem;
+				font-size: 1em;
 
 				svg {
-					height: 1.4rem;
-					width: 1.25rem;
+					height: 1.4em;
+					width: 1.25em;
 				}
 			}
 
 			&__extra {
-				font-size: 0.8rem;
+				font-size: 0.8em;
 				color: var(--color-text-500);
 				text-transform: capitalize;
 			}
 
 			&__genres-wrap {
-				margin-top: 0.5rem;
-				height: 2rem;
+				margin-top: 0.5em;
+				height: 2em;
 				width: 100%;
 			}
 
 			&__genre {
 				background: var(--color-background-100);
-				padding: 5px;
-				border-radius: 4px;
-				font-size: 0.6rem;
+				padding: .5em;
+				border-radius: .4em;
+				font-size: 0.6em;
 			}
 
 			&__plot-wrap {
-				font-size: 0.65rem;
+				font-size: 0.7em;
 				font-weight: 500;
 				color: var(--color-text-400);
-				line-height: 1rem;
+				line-height: 1.4em;
 				height: 50%;
 			}
 
@@ -356,7 +359,7 @@
 }
 
 *::-webkit-scrollbar {
-	width: 0.5rem;
+	width: 0.5em;
 }
 
 *::-webkit-scrollbar-track {
@@ -366,4 +369,56 @@
 *::-webkit-scrollbar-thumb {
 	background: var(--color-extra-500);
 	border-radius: 20px;
+}
+
+
+
+@media screen and (max-width: 80rem) {
+	html {
+		font-size: 14px;
+	}
+
+	.content{
+		width: 100%;
+	}
+
+	.results{
+		grid-template-columns: repeat(auto-fill, minmax(26rem, 30rem));
+	}
+}
+
+@media screen and (max-width: 48rem){
+
+	.search-panel{
+		grid-template-columns: repeat(auto-fit, 100%);
+	}
+	
+}
+
+@media screen and (max-width: 27rem) {
+	html {
+		font-size: 10px;
+	}
+
+	.search-panel {
+		.filter__field__container {
+			overflow-x: scroll;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+
+			.field .filter__dropdown {
+				overflow: scroll;
+			}
+		}
+	}
+
+	.filters-display .sort {
+		justify-self: end;
+	}
+
+	.results{
+		font-size: 8px;
+	}
 }
