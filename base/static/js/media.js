@@ -16,9 +16,11 @@ const statsBar = document.querySelector(".stats__bar");
 const recommendedContainer = document.querySelector(".recommended__cards");
 
 let episodesTabContainer, chaptersTabContainer;
-if (mediaType === "anime")
+if (mediaType === "anime") {
 	episodesTabContainer = document.querySelector(".tab.episodes .episodes__cards");
-else chaptersTabContainer = document.querySelector(".tab.chapters .chapters__cards");
+} else {
+	chaptersTabContainer = document.querySelector(".tab.chapters .chapters__cards");
+}
 
 const allGenres = {
 	150: "Action",
@@ -159,15 +161,18 @@ const fetchEpisodes = function (id) {
 				}
 			}
 			episodes = data.data.episodes;
-			episodes.forEach((e) => {
-				media.episodes.push({
-					episode: e.episode,
-					title: e.title,
-					cover: e.images.jpg.image_url?.replace("large", "fwide"),
+
+			if (episodes.length) {
+				episodes.forEach((e) => {
+					media.episodes.push({
+						episode: e.episode,
+						title: e.title,
+						cover: e.images.jpg.image_url?.replace("large", "fwide"),
+					});
 				});
-			});
-			media.episodes.reverse();
-			episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
+				media.episodes.reverse();
+				episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
+			}
 
 			if (mediaType === "anime") {
 				trailerContainer.innerHTML = `
@@ -193,6 +198,7 @@ const fetchCharacters = function (id) {
 				});
 			});
 
+			media.characters.sort((a, b) => a.id - b.id);
 			let characterCards = generateCharacterCards();
 			charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
 			charactersTabContainer.innerHTML = characterCards.join("\n");
@@ -230,7 +236,7 @@ const fetchInfo = function (id) {
 			media.episodeCount = data.episodes;
 			media.chapterCount = data.chapters;
 			media.synopsis = data.synopsis?.replace("[Written by MAL Rewrite]", "");
-			media.en = data.title_english;
+			media.en = data.title_english ? data.title_english : media.en;
 			media.enjp = data.title;
 			media.jp = data.title_japanese;
 			media.popularity = data.members;
@@ -241,7 +247,7 @@ const fetchInfo = function (id) {
 			media.publisher = data.serializations?.[0]?.name;
 			media.studio = data.studios?.[0]?.name;
 
-			renderContent()
+			renderContent();
 		});
 };
 
@@ -253,6 +259,8 @@ const fetchMALData = function () {
 		setTimeout(() => {
 			if (mediaType === "anime") {
 				fetchEpisodes(media.malId);
+			} else {
+				generateChapterCards();
 			}
 		}, 2000);
 	}
@@ -294,6 +302,23 @@ const generateEpisodeCards = function () {
 	});
 };
 
+const generateChapterCards = function () {
+	cards = "";
+
+	for (let x = 1; x <= media.chapterCount; x++) {
+		cards += `<div class="chapters__card">
+		<div class="chapters__card__cover">
+		</div>
+		<p class="episodes__card__number"></p>
+		<p class="chapters__card__title">Chapter ${x}</p>
+		</div>`;
+	}
+
+	if (cards) {
+		chaptersTabContainer.innerHTML = cards;
+	}
+};
+
 const generateCharacterCards = function () {
 	return media.characters.map((c) => {
 		return `<div class="characters__card">
@@ -306,19 +331,18 @@ const generateCharacterCards = function () {
 	});
 };
 
-const generateRecommendedCards = function(){
-	return JSON.parse(recommended).map(x => {
-		x = JSON.parse(x)
+const generateRecommendedCards = function () {
+	return JSON.parse(recommended).map((x) => {
+		x = JSON.parse(x);
 		return `<div class="recommended__card">
 				<div class="recommended__card__cover">
 					<img src="${x.poster}">
 				</div>
 				<a href="/${mediaType}/${x.type}/${x.id}/${x.slug}"  
 					class="recommended__card__title">${x.title}</a>
-			</div>`
-	})
-}
-
+			</div>`;
+	});
+};
 
 const formatExtrasCount = function () {
 	if (media.type === "TV") {
@@ -399,9 +423,8 @@ const renderStats = function () {
 	updateStatsBar();
 };
 
-
 const renderContent = function () {
-	document.title = media.title + " | Hoshi"
+	document.title = media.title + " | Hoshi";
 
 	posterContainer.innerHTML = `<img src="${media.poster}">`;
 
@@ -490,9 +513,7 @@ const renderContent = function () {
 			<span>${media.tags.join(", ")}</span>
 		</div>`.replaceAll("undefined", "");
 
-
-	recommendedContainer.innerHTML = generateRecommendedCards().join("\n")
-
+	recommendedContainer.innerHTML = generateRecommendedCards().join("\n");
 };
 
 const main = function () {
@@ -504,7 +525,7 @@ const main = function () {
 			parseData(data.data);
 			fetchMALData();
 			mainContainer.classList.remove("content--hidden");
-			renderContent()
+			renderContent();
 		});
 };
 
