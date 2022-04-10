@@ -56,7 +56,7 @@ const reset = function () {
 	document.querySelector(".results").innerHTML = "";
 	activeFilterContainer.innerHTML = "";
 	query.value = "";
-	activeSortTitle.innerHTML = `<i data-feather="code" class="sort-icon"></i>Score`;
+	activeSortTitle.innerHTML = `<i data-feather="code" class="sort-icon"></i>Popularity`;
 	genreBox.innerHTML = `<p class="field__placeholder">Any</p>
 		<div class="tag-wrap">
 			<span class="tag first-tag"></span>
@@ -71,6 +71,8 @@ const reset = function () {
 		opt.classList.remove("filter__dropdown__option--selected");
 		opt.querySelector("svg").remove();
 	});
+
+	generateMediaCard();
 };
 
 /**
@@ -321,9 +323,8 @@ const generateMediaCard = function (load = false) {
 										${media.subtype} • ${formatExtraInfo(media)} ${media.status}
 										</p>
 									</div>
-									<div class="media__card__info__genres-wrap">${generateGenreElements(
-										x.relationships.categories.data
-									)}
+									<div class="media__card__info__genres-wrap">
+									${generateGenreElements(x.relationships.categories.data)}
 									</div>
 									<div class="media__card__info__plot-wrap">
 										<p class="media__card__info__synopsis">
@@ -365,17 +366,17 @@ const loadMedia = function (entries, observer) {
 
 const observer = new IntersectionObserver(loadMedia, { threshold: [0.5] });
 
-
-const debounce = function(func, timeout = 500){
+const debounce = function (func, timeout = 500) {
 	let timer;
 	return (...args) => {
-	  clearTimeout(timer);
-	  timer = setTimeout(() => {
-		  func(...args)
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			func(...args);
 		}, timeout);
 	};
-  }
+};
 
+reset();
 
 mediaDropdownBtn.addEventListener("click", () => {
 	const dropdown = document.querySelector(".type__dropdown");
@@ -490,7 +491,6 @@ sortDropdown.addEventListener("click", (e) => {
 		debounce(generateMediaCard)();
 	}
 });
-
 
 query.addEventListener("input", () => {
 	activeFilters();
