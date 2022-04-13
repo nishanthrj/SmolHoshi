@@ -96,14 +96,19 @@ const parseData = function (data) {
 	media.runtime = data.totalLength;
 	media.status = data.status;
 	media.synopsis = data.synopsis;
-	titles = Object.values(data.titles)
-	media.en = titles[0];
-	media.enjp = titles[1];
-	media.jp = titles[2];
+	media.startDate = data.startDate;
+	media.en = data.titles.en_us
+	media.enjp = data.titles.en_jp;
+	media.jp = data.titles.ja_jp;
 	media.score = data.averageRating ? Math.round(Number(data.averageRating)) + "%" : "";
 	media.rating = `${data.ageRating} - ${data.ageRatingGuide}`;
 	media.trailerId = data.youtubeVideoId;
 	media.season = getSeason(...data.startDate.split("-").slice(0, 2));
+
+	if (data.subtype === 'manhwa'){
+		media.enjp = data.titles.en_kr;
+		media.jp = data.titles.ko_kr;
+	}
 };
 
 const parseIncluded = function (data) {
@@ -512,7 +517,7 @@ const renderContent = function () {
 		<div class="details__text__tags">
 			<strong>Tags</strong>
 			<span>${media.tags.join(", ")}</span>
-		</div>`.replaceAll("undefined", "");
+		</div>`.replaceAll("undefined", "").replaceAll("null", "");
 
 	recommendedContainer.innerHTML = generateRecommendedCards().join("\n");
 };
