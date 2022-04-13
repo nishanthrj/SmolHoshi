@@ -155,9 +155,10 @@ const parseIncluded = function (data) {
 };
 
 const fetchEpisodes = function (id) {
-	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/videos`)
+	fetch(`https://api.jikan.moe/v4/anime/${id}/videos`)
 		.then((res) => res.json())
 		.then((data) => {
+			let episodes;
 			media.trailerId = data.data?.promo[0]?.trailer.youtube_id;
 
 			for (let t of data.data.promo) {
@@ -166,9 +167,9 @@ const fetchEpisodes = function (id) {
 					break;
 				}
 			}
-			episodes = data.data.episodes;
 
-			if (episodes.length) {
+			if (data.data.episodes.length) {
+				episodes = data.data.episodes;
 				episodes.forEach((e) => {
 					media.episodes.push({
 						episode: e.episode,
@@ -178,6 +179,22 @@ const fetchEpisodes = function (id) {
 				});
 				media.episodes.reverse();
 				episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
+			} else {
+				setTimeout(() => {
+					fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`)
+						.then((res) => res.json())
+						.then((data) => {
+							episodes = data.data;
+							episodes.forEach((e) => {
+								media.episodes.push({
+									episode: `Episode ${e.mal_id}`,
+									title: e.title,
+									cover: null,
+								});
+							});
+							episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
+						});
+				}, 1000);
 			}
 
 			if (mediaType === "anime") {
