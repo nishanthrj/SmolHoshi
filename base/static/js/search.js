@@ -228,11 +228,12 @@ const generateGenreElements = function (mediaGenres) {
 	let tagCount = 0;
 
 	mediaGenres.forEach((g) => {
-		if (allGenres[g.id]) {
-			tags += `<span class="media__card__info__genre">${allGenres[g.id]}</span>\n`;
-			tagCount++;
+		if (tagCount <= 4) {
+			if (allGenres[g.id]) {
+				tags += `<span class="media__card__info__genre">${allGenres[g.id]}</span>\n`;
+				tagCount++;
+			}
 		}
-		if (tagCount >= 4) return tags;
 	});
 	return tags;
 };
