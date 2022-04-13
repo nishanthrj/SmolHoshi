@@ -60,7 +60,7 @@ let media = {
 	relations: [],
 	episodes: [],
 	characters: [],
-	staffs: [],
+	startDate: "",
 	en: "",
 	enjp: "",
 	jp: "",
@@ -326,9 +326,18 @@ const generateEpisodeCards = function () {
 };
 
 const generateChapterCards = function () {
-	cards = "";
+	let cards = "";
+	let chapters = 0
 
-	for (let x = 1; x <= media.chapterCount; x++) {
+	if (media.chapterCount){
+		chapters = media.chapterCount
+	} else {
+		d1 = new Date(media.startDate)
+		d2 = new Date()
+		chapters = Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
+	}
+
+	for (let x = 1; x <= chapters; x++) {
 		cards += `<div class="chapters__card">
 		<div class="chapters__card__cover">
 		</div>
