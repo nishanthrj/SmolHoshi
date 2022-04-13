@@ -7,18 +7,21 @@ def home(request):
     return render(request, 'search.html')
 
 
-def anime(request, animeType, animeId, slug):
-    recommended_anime = json.dumps(recommend.recommend(int(animeId), animeType))
+def anime(request, mediaFormat, mediaId, slug):
+    recommended_anime = json.dumps(recommend.recommend(int(mediaId), mediaFormat, "anime"))
     context = {
-        'mediaId': animeId,
+        'mediaId': mediaId,
         'mediaType': 'anime',
         'recommended': recommended_anime
     }
     return render(request, 'media.html', context=context)
 
-def manga(request, mangaType, mangaId, slug):
+def manga(request, mediaFormat, mediaId, slug):
+    recommended_manga = json.dumps(recommend.recommend(int(mediaId), mediaFormat, "manga"))
+    
     context = {
-        'mediaId': mangaId,
+        'mediaId': mediaId,
         'mediaType': 'manga',
+        'recommended': recommended_manga
     }
     return render(request, 'media.html', context=context)

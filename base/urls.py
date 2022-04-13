@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('anime/<animeType>/<animeId>/<slug>/', views.anime, name='anime'),
-    path('manga/<mangaType>/<mangaId>/<slug>/', views.manga, name='manga')
+    path('anime/<mediaFormat>/<mediaId>/<slug>/', views.anime, name='anime'),
+    path('manga/<mediaFormat>/<mediaId>/<slug>/', views.manga, name='manga')
 ]
