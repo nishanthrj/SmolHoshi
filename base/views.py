@@ -1,14 +1,16 @@
 import json
 from django.shortcuts import render
-from . import recommend
+from .models import AnimeRecommendation, MangaRecommendation
 
 # Create your views here.
+
+
 def home(request):
     return render(request, 'search.html')
 
 
 def anime(request, mediaFormat, mediaId, slug):
-    recommended_anime = json.dumps(recommend.recommend(int(mediaId), mediaFormat, "anime"))
+    recommended_anime = json.dumps(AnimeRecommendation.objects.get(id=mediaId).data)
     context = {
         'mediaId': mediaId,
         'mediaType': 'anime',
@@ -16,9 +18,11 @@ def anime(request, mediaFormat, mediaId, slug):
     }
     return render(request, 'media.html', context=context)
 
+
 def manga(request, mediaFormat, mediaId, slug):
-    recommended_manga = json.dumps(recommend.recommend(int(mediaId), mediaFormat, "manga"))
-    
+    recommended_manga = json.dumps(MangaRecommendation.objects.get(id=mediaId).data)
+
+
     context = {
         'mediaId': mediaId,
         'mediaType': 'manga',

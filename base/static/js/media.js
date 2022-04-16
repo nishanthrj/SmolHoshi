@@ -364,8 +364,7 @@ const generateCharacterCards = function () {
 };
 
 const generateRecommendedCards = function () {
-	return JSON.parse(recommended).map((x) => {
-		x = JSON.parse(x);
+	return recommended.map((x) => {
 		return `<div class="recommended__card">
 				<div class="recommended__card__cover">
 					<img src="${x.poster}">
