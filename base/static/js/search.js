@@ -72,7 +72,7 @@ const reset = function () {
 		opt.querySelector("svg").remove();
 	});
 
-	generateMediaCard();
+	createMediaCards();
 };
 
 /**
@@ -218,12 +218,12 @@ const ratingIcon = function (rating) {
 };
 
 /**
- * Generates a collection of Genre elements for a specific media.
+ * Creates a collection of Genre elements for a specific media.
  * @param {object} listGenres All the genres related to the fetched media collection.
  * @param {object} mediaGenres All the genres of the specific media.
  * @returns {string} The collection of genre elements respective to specific media.
  */
-const generateGenreElements = function (mediaGenres) {
+const createGenreElements = function (mediaGenres) {
 	let tags = "";
 	let tagCount = 0;
 
@@ -288,7 +288,7 @@ const constructUrl = function () {
  * Renders the media cards based on search results.
  * @param {boolean} [load=false] Determines whether new cards should be rendered below or replace the existing cards.
  */
-const generateMediaCard = function (load = false) {
+const createMediaCards = function (load = false) {
 	let url;
 	let cards = "";
 	const container = document.querySelector(".results");
@@ -325,7 +325,7 @@ const generateMediaCard = function (load = false) {
 										</p>
 									</div>
 									<div class="media__card__info__genres-wrap">
-									${generateGenreElements(x.relationships.categories.data)}
+									${createGenreElements(x.relationships.categories.data)}
 									</div>
 									<div class="media__card__info__plot-wrap">
 										<p class="media__card__info__synopsis">
@@ -361,7 +361,7 @@ const loadMedia = function (entries, observer) {
 		// Stop observing the element when it comes into view once.
 		// This prevents the page from loading new media every time the element comes into view.
 		observer.unobserve(entries[0].target);
-		if (nextPage) generateMediaCard((load = true));
+		if (nextPage) createMediaCards((load = true));
 	}
 };
 
@@ -431,7 +431,7 @@ genreDropdown.addEventListener("click", (e) => {
 		e.target.classList.toggle("filter__dropdown__option--selected");
 		showMultiTags(selectedGenres);
 		activeFilters();
-		debounce(generateMediaCard)();
+		debounce(createMediaCards)();
 	}
 });
 
@@ -455,7 +455,7 @@ typeDropdown.addEventListener("click", (e) => {
 		}
 		closeDropdown();
 		activeFilters();
-		debounce(generateMediaCard)();
+		debounce(createMediaCards)();
 	}
 });
 
@@ -479,7 +479,7 @@ statusDropdown.addEventListener("click", (e) => {
 		}
 		closeDropdown();
 		activeFilters();
-		debounce(generateMediaCard)();
+		debounce(createMediaCards)();
 	}
 });
 
@@ -489,11 +489,11 @@ sortDropdown.addEventListener("click", (e) => {
 		activeSortTitle.innerHTML = `<i data-feather="code" class="sort-icon"></i>${e.target.textContent}`;
 		feather.replace();
 		closeDropdown();
-		debounce(generateMediaCard)();
+		debounce(createMediaCards)();
 	}
 });
 
 query.addEventListener("input", () => {
 	activeFilters();
-	if (query.value.length >= 3) debounce(generateMediaCard)();
+	if (query.value.length >= 3) debounce(createMediaCards)();
 });

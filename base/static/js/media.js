@@ -79,11 +79,21 @@ let media = {
 	recommended: [],
 };
 
+/**
+ * Returns the season and year of the anime.
+ * @param {String} year Release year.
+ * @param {String} month Release month.
+ * @returns Release season and year of the anime.
+ */
 const getSeason = function (year, month) {
 	const seasons = ["Winter", "Spring", "Summer", "Fall"];
 	return `${seasons[Math.floor(Number(month) / 3)]} ${year}`;
 };
 
+/**
+ * Update primary media information from Kitsu API.
+ * @param {Object} data Media data.
+ */
 const parseData = function (data) {
 	media.id = data.id;
 	data = data.attributes;
@@ -97,7 +107,7 @@ const parseData = function (data) {
 	media.status = data.status;
 	media.synopsis = data.synopsis;
 	media.startDate = data.startDate;
-	media.en = data.titles.en_us
+	media.en = data.titles.en_us;
 	media.enjp = data.titles.en_jp;
 	media.jp = data.titles.ja_jp;
 	media.score = data.averageRating ? Math.round(Number(data.averageRating)) + "%" : "";
@@ -105,12 +115,16 @@ const parseData = function (data) {
 	media.trailerId = data.youtubeVideoId;
 	media.season = getSeason(...data.startDate.split("-").slice(0, 2));
 
-	if (data.subtype === 'manhwa'){
+	if (data.subtype === "manhwa") {
 		media.enjp = data.titles.en_kr;
 		media.jp = data.titles.ko_kr;
 	}
 };
 
+/**
+ * Update included media information such as relations, genres, etc from Kitsu API.
+ * @param {Array} data Included data.
+ */
 const parseIncluded = function (data) {
 	let mediaRelation = [];
 
@@ -119,6 +133,7 @@ const parseIncluded = function (data) {
 			media.malId = x.attributes.externalId;
 			return;
 		}
+
 		if (x.type === "anime" || x.type === "manga") {
 			media.relations.push({
 				id: x.id,
@@ -131,14 +146,17 @@ const parseIncluded = function (data) {
 			});
 			return;
 		}
+
 		if (x.type === "categories") {
 			if (allGenres[x.id]) media.genres.push(allGenres[x.id]);
 			else media.tags.push(x.attributes.title);
 			return;
 		}
+
 		if (x.type === "producers" && !media.studio) {
 			media.studio = x.attributes.name;
 		}
+
 		if (x.type === "mediaRelationships") {
 			mediaRelation.push({
 				id: x.relationships.destination.data.id,
@@ -147,14 +165,102 @@ const parseIncluded = function (data) {
 		}
 	});
 
+	// Maps related media with its respective role.
 	media.relations.forEach((x, i) => {
 		media.relations[i].relation = mediaRelation.find((r) => r.id === x.id).role;
 	});
 
-	relationsContainer.innerHTML = generateRelationCards().join("\n");
+	relationsContainer.innerHTML = createRelationCards().join("\n");
 };
 
-const fetchEpisodes = function (id) {
+/**
+ * Fetches media info from Jikan API.
+ * @param {Number} id MAL ID of the anime.
+ */
+const fetchInfo = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}`)
+		.then((res) => res.json())
+		.then((data) => {
+			data = data.data;
+			media.source = data.source;
+			media.episodeCount = data.episodes;
+			media.chapterCount = data.chapters;
+			media.synopsis = data.synopsis?.replace("[Written by MAL Rewrite]", "");
+			media.en = data.title_english ? data.title_english : media.en;
+			media.enjp = data.title;
+			media.jp = data.title_japanese;
+			media.popularity = data.members;
+			media.score = data.score ? Math.round(data.score * 10) + "%" : "";
+			media.rating = data.rating;
+			media.trailerId = data.trailer?.youtube_id;
+			media.season = `${data.season} ${data.year}`;
+			media.publisher = data.serializations?.[0]?.name;
+			media.studio = data.studios?.[0]?.name;
+
+			renderContent();
+		});
+};
+
+/**
+ * Fetches Character info from Jikan API.
+ * @param {Number} id MAL ID of the media.
+ */
+const fetchCharacters = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/characters`)
+		.then((res) => res.json())
+		.then((data) => {
+			characters = data.data;
+			characters.forEach((c) => {
+				media.characters.push({
+					id: c.character.mal_id,
+					// Need to split the name from url.
+					// since names are mentioned in japanese style (lastname, firstname).
+					name: c.character.url.split("/").at(-1).replaceAll("_", " "),
+					image: c.character.images.jpg.image_url,
+					voice: c.voice_actors?.[0]?.person.url.split("/").at(-1).replaceAll("_", " "),
+				});
+			});
+
+			// Sort characters by id to get important characters on the top.
+			media.characters.sort((a, b) => a.id - b.id);
+
+			let characterCards = createCharacterCards();
+			charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
+			charactersTabContainer.innerHTML = characterCards.join("\n");
+		});
+};
+
+/**
+ * Fetches stats from Jikan API.
+ * @param {Number} id MAL ID of the anime.
+ */
+const fetchStats = function (id) {
+	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/statistics`)
+		.then((res) => res.json())
+		.then((data) => {
+			stats = data.data;
+			media.popularity = stats.total;
+			media.completed = stats.completed;
+			media.planning = stats.plan_to_watch;
+			media.paused = stats.on_hold;
+			media.dropped = stats.dropped;
+			if (mediaType === "anime") {
+				media.watching = stats.watching;
+				media.planning = stats.plan_to_watch;
+			} else {
+				media.reading = stats.reading;
+				media.planning = stats.plan_to_read;
+			}
+
+			renderStats();
+		});
+};
+
+/**
+ * Fetches Episodes and Trailer.
+ * @param {Number} id MAL ID of the anime.
+ */
+const fetchVideos = function (id) {
 	let episodes = [];
 	page = `https://kitsu.io/api/edge/episodes?filter[mediaId]=${media.id}`;
 
@@ -247,74 +353,9 @@ const fetchEpisodes = function (id) {
 		});
 };
 
-
-const fetchCharacters = function (id) {
-	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/characters`)
-		.then((res) => res.json())
-		.then((data) => {
-			characters = data.data;
-			characters.forEach((c) => {
-				media.characters.push({
-					id: c.character.mal_id,
-					name: c.character.url.split("/").at(-1).replaceAll("_", " "),
-					image: c.character.images.jpg.image_url,
-					voice: c.voice_actors?.[0]?.person.url.split("/").at(-1).replaceAll("_", " "),
-				});
-			});
-
-			media.characters.sort((a, b) => a.id - b.id);
-			let characterCards = generateCharacterCards();
-			charactersContainer.innerHTML = characterCards.slice(0, 6).join("\n");
-			charactersTabContainer.innerHTML = characterCards.join("\n");
-		});
-};
-
-const fetchStats = function (id) {
-	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/statistics`)
-		.then((res) => res.json())
-		.then((data) => {
-			stats = data.data;
-			media.popularity = stats.total;
-			media.completed = stats.completed;
-			media.planning = stats.plan_to_watch;
-			media.paused = stats.on_hold;
-			media.dropped = stats.dropped;
-			if (mediaType === "anime") {
-				media.watching = stats.watching;
-				media.planning = stats.plan_to_watch;
-			} else {
-				media.reading = stats.reading;
-				media.planning = stats.plan_to_read;
-			}
-
-			renderStats();
-		});
-};
-
-const fetchInfo = function (id) {
-	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}`)
-		.then((res) => res.json())
-		.then((data) => {
-			data = data.data;
-			media.source = data.source;
-			media.episodeCount = data.episodes;
-			media.chapterCount = data.chapters;
-			media.synopsis = data.synopsis?.replace("[Written by MAL Rewrite]", "");
-			media.en = data.title_english ? data.title_english : media.en;
-			media.enjp = data.title;
-			media.jp = data.title_japanese;
-			media.popularity = data.members;
-			media.score = data.score ? Math.round(data.score * 10) + "%" : "";
-			media.rating = data.rating;
-			media.trailerId = data.trailer?.youtube_id;
-			media.season = `${data.season} ${data.year}`;
-			media.publisher = data.serializations?.[0]?.name;
-			media.studio = data.studios?.[0]?.name;
-
-			renderContent();
-		});
-};
-
+/**
+ * Fetches additional data from Jikan API.
+ */
 const fetchMALData = function () {
 	if (media.malId) {
 		fetchInfo(media.malId);
@@ -322,100 +363,18 @@ const fetchMALData = function () {
 		fetchStats(media.malId);
 		setTimeout(() => {
 			if (mediaType === "anime") {
-				fetchEpisodes(media.malId);
+				fetchVideos(media.malId);
 			} else {
-				generateChapterCards();
+				createChapterCards();
 			}
 		}, 2000);
 	}
 };
 
-const generateGenreElements = function () {
-	return media.genres
-		.map((g) => `<span class="header__text__genre__item">${g}</span>`)
-		.join("\n");
-};
-
-const generateRelationCards = function () {
-	return media.relations.map((r) => {
-		return `<div class="relations__media__card">
-				<div class="relations__media__card__cover">
-					<img src="${r.poster}"/>
-				</div>
-				<div class="relations__media__card__text">
-					<p class="relations__media__card__text__relation">${r.relation}</p>
-					<a href="/${r.format}/${r.type}/${r.id}/${r.slug}" 
-					   class="relations__media__card__text__title">
-						${r.title}
-					</a>
-					<p class="relations__media__card__text__extras">${r.type} • ${r.status}</p>
-				</div>
-			</div>`;
-	});
-};
-
-const generateEpisodeCards = function () {
-	return media.episodes.map((e) => {
-		return `<div class="episodes__card">
-		<div class="episodes__card__cover">
-		${e.cover ? `<img src="${e.cover}"/>` : ""}
-		</div>
-		<p class="episodes__card__number">${e.episode}</p>
-		<p class="episodes__card__title">${e.title}</p>
-		</div>`;
-	});
-};
-
-const generateChapterCards = function () {
-	let cards = "";
-	let chapters = 0
-
-	if (media.chapterCount){
-		chapters = media.chapterCount
-	} else {
-		d1 = new Date(media.startDate)
-		d2 = new Date()
-		chapters = Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
-	}
-
-	for (let x = 1; x <= chapters; x++) {
-		cards += `<div class="chapters__card">
-		<div class="chapters__card__cover">
-		</div>
-		<p class="episodes__card__number"></p>
-		<p class="chapters__card__title">Chapter ${x}</p>
-		</div>`;
-	}
-
-	if (cards) {
-		chaptersTabContainer.innerHTML = cards;
-	}
-};
-
-const generateCharacterCards = function () {
-	return media.characters.map((c) => {
-		return `<div class="characters__card">
-				<div class="characters__card__img">
-				${!c.image.includes("questionmark") ? `<img src="${c.image}"/>` : ""}
-				</div>
-				<p class="characters__card__name">${c.name}</p>
-				<p class="characters__card__voice">${c.voice ? c.voice : ""}</p>
-			</div>`;
-	});
-};
-
-const generateRecommendedCards = function () {
-	return recommended.map((x) => {
-		return `<div class="recommended__card">
-				<div class="recommended__card__cover">
-					<img src="${x.poster}">
-				</div>
-				<a href="/${mediaType}/${x.type}/${x.id}/${x.slug}"  
-					class="recommended__card__title">${x.title}</a>
-			</div>`;
-	});
-};
-
+/**
+ * Formats the extra info (episodes, runtime, chapters).
+ * @returns {string} Formatted extra info.
+ */
 const formatExtrasCount = function () {
 	if (media.type === "TV") {
 		return (
@@ -441,6 +400,120 @@ const formatExtrasCount = function () {
 	);
 };
 
+/**
+ * Creates genre elements.
+ * @returns {String} An HTML string of genre elements.
+ */
+const createGenreElements = function () {
+	return media.genres
+		.map((g) => `<span class="header__text__genre__item">${g}</span>`)
+		.join("\n");
+};
+
+/**
+ * Creates related media cards.
+ * @returns {Array} An array of HTML string of related media cards.
+ */
+const createRelationCards = function () {
+	return media.relations.map((r) => {
+		return `<div class="relations__media__card">
+				<div class="relations__media__card__cover">
+					<img src="${r.poster}"/>
+				</div>
+				<div class="relations__media__card__text">
+					<p class="relations__media__card__text__relation">${r.relation}</p>
+					<a href="/${r.format}/${r.type}/${r.id}/${r.slug}" 
+					   class="relations__media__card__text__title">
+						${r.title}
+					</a>
+					<p class="relations__media__card__text__extras">${r.type} • ${r.status}</p>
+				</div>
+			</div>`;
+	});
+};
+
+/**
+ * Creates episode cards.
+ * @returns {Array} An array of HTML string of episode cards.
+ */
+const createEpisodeCards = function () {
+	return media.episodes.map((e) => {
+		return `<div class="episodes__card">
+		<div class="episodes__card__cover">
+		${e.cover ? `<img src="${e.cover}"/>` : ""}
+		</div>
+		<p class="episodes__card__number">${e.episode}</p>
+		<p class="episodes__card__title">${e.title}</p>
+		</div>`;
+	});
+};
+
+/**
+ * Creates chapter cards.
+ */
+const createChapterCards = function () {
+	let cards = "";
+	let chapters = 0;
+
+	if (media.chapterCount) {
+		chapters = media.chapterCount;
+	} else {
+		// If chapter count is unavailable
+		// calculate chapters based on weeks passed since release.
+		d1 = new Date(media.startDate);
+		d2 = new Date();
+		chapters = Math.round((d2 - d1) / (7 * 24 * 60 * 60 * 1000));
+	}
+
+	for (let x = 1; x <= chapters; x++) {
+		cards += `<div class="chapters__card">
+		<div class="chapters__card__cover">
+		</div>
+		<p class="episodes__card__number"></p>
+		<p class="chapters__card__title">Chapter ${x}</p>
+		</div>`;
+	}
+
+	if (cards) {
+		chaptersTabContainer.innerHTML = cards;
+	}
+};
+
+/**
+ * Creates character cards.
+ * @returns {Array} An array of HTML string of character cards.
+ */
+const createCharacterCards = function () {
+	return media.characters.map((c) => {
+		return `<div class="characters__card">
+				<div class="characters__card__img">
+				${!c.image.includes("questionmark") ? `<img src="${c.image}"/>` : ""}
+				</div>
+				<p class="characters__card__name">${c.name}</p>
+				<p class="characters__card__voice">${c.voice ? c.voice : ""}</p>
+			</div>`;
+	});
+};
+
+/**
+ * Creates recommended media cards.
+ * @returns {Array} An array of HTML string of recommended media cards.
+ */
+const createRecommendedCards = function () {
+	return recommended.map((x) => {
+		return `<div class="recommended__card">
+				<div class="recommended__card__cover">
+					<img src="${x.poster}">
+				</div>
+				<a href="/${mediaType}/${x.type}/${x.id}/${x.slug}"  
+					class="recommended__card__title">${x.title}</a>
+			</div>`;
+	});
+};
+
+/**
+ * Updates the size of each entries in stats bar.
+ */
 const updateStatsBar = function () {
 	let statsBarWidth = {
 		completed: "0%",
@@ -472,6 +545,9 @@ const updateStatsBar = function () {
 	}
 };
 
+/**
+ * Renders the stats on the page.
+ */
 const renderStats = function () {
 	statsContainer.innerHTML = `<div class="stats__item completed">
 			<h6 class="stats__item__name">Completed</h6>
@@ -495,6 +571,9 @@ const renderStats = function () {
 	updateStatsBar();
 };
 
+/**
+ * Renders media data on the page.
+ */
 const renderContent = function () {
 	document.title = media.title + " | Hoshi";
 
@@ -508,7 +587,7 @@ const renderContent = function () {
 		<h1 class="header__text__title">${media.title}</h1>
 		<p class="header__text__extras">${media.type} • ${formatExtrasCount()} ${media.status}</p>
 		<div class="header__text__genre">
-			${generateGenreElements()}
+			${createGenreElements()}
 		</div>
 		<p class="header__text__synopsis">${media.synopsis ? media.synopsis : ""}
 		</p>`.replaceAll("undefined", "");
@@ -583,11 +662,16 @@ const renderContent = function () {
 		<div class="details__text__tags">
 			<strong>Tags</strong>
 			<span>${media.tags.join(", ")}</span>
-		</div>`.replaceAll("undefined", "").replaceAll("null", "");
+		</div>`
+		.replaceAll("undefined", "")
+		.replaceAll("null", "");
 
-	recommendedContainer.innerHTML = generateRecommendedCards().join("\n");
+	recommendedContainer.innerHTML = createRecommendedCards().join("\n");
 };
 
+/**
+ * Main function to fetch and render data on the page.
+ */
 const main = function () {
 	let url = `https://kitsu.io/api/edge/${mediaType}/${mediaId}?include=categories,mappings,mediaRelationships.destination,productions.company`;
 	fetch(url)
@@ -603,6 +687,10 @@ const main = function () {
 
 setTimeout(main, 1000);
 
+/**
+ * Switch between tabs on the media page.
+ * @param {*} selected The tab selected by the user.
+ */
 const switchTab = function (selected) {
 	if (selected.classList.contains("navbar__link")) {
 		let selectedTab = document.querySelector(`.tab.${selected.dataset.tab}`);
