@@ -155,12 +155,47 @@ const parseIncluded = function (data) {
 };
 
 const fetchEpisodes = function (id) {
+	let episodes = [];
+	page = `https://kitsu.io/api/edge/episodes?filter[mediaId]=${media.id}`;
+
+	// Initially fetch episodes from  Kitsu API.
+	const fetchKitsuEpisodes = function () {
+		fetch(page)
+			.then((res) => res.json())
+			.then((data) => {
+				episodes.push(...data.data);
+				// Ignore all the episodes if the meta data isn't available.
+				if (!episodes[0]?.attributes.canonicalTitle) {
+					return;
+				}
+				// Check if next page is available and fetch the new page too.
+				page = data.links.next ? data.links.next : null;
+				if (page) {
+					fetchKitsuEpisodes();
+					return;
+				}
+				episodes.forEach((e) => {
+					if (!e.attributes.canonicalTitle) {
+						return;
+					}
+					media.episodes.push({
+						episode: `Episode ${e.attributes.number}`,
+						title: e.attributes.canonicalTitle ? e.attributes.canonicalTitle : "",
+						cover: e.attributes.thumbnail?.large,
+					});
+				});
+				episodesTabContainer.innerHTML = createEpisodeCards().join("\n");
+			});
+	};
+	fetchKitsuEpisodes();
+
+	// Fetch episodes and videos from Jikan API.
 	fetch(`https://api.jikan.moe/v4/anime/${id}/videos`)
 		.then((res) => res.json())
 		.then((data) => {
-			let episodes;
 			media.trailerId = data.data?.promo[0]?.trailer.youtube_id;
 
+			// Get the PV instead of official trailer since they are often unavailable.
 			for (let t of data.data.promo) {
 				if (t.title.includes("PV")) {
 					media.trailerId = t.trailer.youtube_id;
@@ -168,6 +203,15 @@ const fetchEpisodes = function (id) {
 				}
 			}
 
+			if (mediaType === "anime") {
+				trailerContainer.innerHTML = `
+				<h1 class="trailer__heading">Trailer</h1>
+				<a class="trailer__clip" data-fancybox data-type="iframe" href="https://www.youtube.com/embed/${media.trailerId}">
+					<img class="trailer__clip__thumbnail" src="https://img.youtube.com/vi/${media.trailerId}/maxresdefault.jpg">
+				</a>`;
+			}
+
+			// Get episode info from crunchyroll videos.
 			if (data.data.episodes.length) {
 				episodes = data.data.episodes;
 				episodes.forEach((e) => {
@@ -178,34 +222,31 @@ const fetchEpisodes = function (id) {
 					});
 				});
 				media.episodes.reverse();
-				episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
+				episodesTabContainer.innerHTML = createEpisodeCards().join("\n");
 			} else {
+				// Get episodes info from episodes path if crunchyroll videos are unavailable.
 				setTimeout(() => {
-					fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`)
-						.then((res) => res.json())
-						.then((data) => {
-							episodes = data.data;
-							episodes.forEach((e) => {
-								media.episodes.push({
-									episode: `Episode ${e.mal_id}`,
-									title: e.title,
-									cover: null,
+					// Skip fetching if episodes data is already available.
+					if (!media.episodes.length) {
+						fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`)
+							.then((res) => res.json())
+							.then((data) => {
+								episodes = data.data;
+								episodes.forEach((e) => {
+									media.episodes.push({
+										episode: `Episode ${e.mal_id}`,
+										title: e.title,
+										cover: null,
+									});
 								});
+								episodesTabContainer.innerHTML = createEpisodeCards().join("\n");
 							});
-							episodesTabContainer.innerHTML = generateEpisodeCards().join("\n");
-						});
+					}
 				}, 1000);
-			}
-
-			if (mediaType === "anime") {
-				trailerContainer.innerHTML = `
-				<h1 class="trailer__heading">Trailer</h1>
-				<a class="trailer__clip" data-fancybox data-type="iframe" href="https://www.youtube.com/embed/${media.trailerId}">
-					<img class="trailer__clip__thumbnail" src="https://img.youtube.com/vi/${media.trailerId}/maxresdefault.jpg">
-				</a>`;
 			}
 		});
 };
+
 
 const fetchCharacters = function (id) {
 	fetch(`https://api.jikan.moe/v4/${mediaType}/${id}/characters`)
