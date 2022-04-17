@@ -359,19 +359,6 @@
 }
 
 
-*::-webkit-scrollbar {
-	width: 0.5em;
-}
-
-*::-webkit-scrollbar-track {
-	background: none;
-}
-
-*::-webkit-scrollbar-thumb {
-	background: var(--color-extra-200);
-	border-radius: 20px;
-}
-
 
 @media screen and (max-width: 80rem) {
 	html {

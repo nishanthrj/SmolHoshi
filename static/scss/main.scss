@@ -81,3 +81,17 @@ svg{
 	color: var(--color-text-100);
 	background: var(--color-background-200);
 }
+
+
+*::-webkit-scrollbar {
+	width: 0.5em;
+}
+
+*::-webkit-scrollbar-track {
+	background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: var(--color-extra-200);
+	border-radius: 20px;
+}
