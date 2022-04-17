@@ -5,7 +5,7 @@
 	flex-direction: column;
 	padding: 3rem 3rem;
 	min-height: 100vh;
-	width: 87%;
+	width: 82%;
 	gap: 3rem;
 }
 
@@ -128,7 +128,7 @@
 					.tag {
 						display: none;
 						font-size: 0.6rem;
-						background: var(--color-extra-500);
+						background: var(--color-extra-200);
 						color: var(--color-text-300);
 						padding: 0.3rem;
 						border-radius: 4px;
@@ -215,7 +215,7 @@
 
 		&__item {
 			font-size: 0.6rem;
-			background: var(--color-extra-500);
+			background: var(--color-extra-200);
 			color: var(--color-text-200);
 			padding: 0.3rem;
 			border-radius: 4px;
@@ -358,6 +358,7 @@
 	}
 }
 
+
 *::-webkit-scrollbar {
 	width: 0.5em;
 }
@@ -367,10 +368,9 @@
 }
 
 *::-webkit-scrollbar-thumb {
-	background: var(--color-extra-500);
+	background: var(--color-extra-200);
 	border-radius: 20px;
 }
-
 
 
 @media screen and (max-width: 80rem) {

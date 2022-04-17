@@ -10,12 +10,8 @@
   --color-background-200: #282931;
   --color-background-300: #1b1c22;
   --color-background-400: #191a1f;
-  --color-background-500: #111215;
-  --color-extra-100: #797d93;
-  --color-extra-200:#6c7086;
-  --color-extra-300:#616578;
-  --color-extra-400: #55596a;
-  --color-extra-500: #4a4d5c;
+  --color-extra-100:#616578;
+  --color-extra-200: #4a4d5c;
   --color-text-100: #dcdde3;
   --color-text-200: #bfc2cc;
   --color-text-300: #a3a6b5;
@@ -60,7 +56,7 @@ svg {
   align-items: center;
   justify-content: center;
   background: var(--color-background-400);
-  border-bottom: 1px solid var(--color-extra-500);
+  border-bottom: 1px solid var(--color-extra-200);
 }
 .main-navbar .logo {
   overflow: hidden;
